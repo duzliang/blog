@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 辅助个人成长与脑力训练全景地图</title>
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f4f0;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #6b6a63;
+    --color-text-tertiary: #9c9a92;
+    --color-border-tertiary: rgba(0,0,0,0.12);
+    --color-border-secondary: rgba(0,0,0,0.25);
+    --color-border-primary: rgba(0,0,0,0.35);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --font-sans: system-ui, -apple-system, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1e1e1c;
+      --color-background-secondary: #2a2a27;
+      --color-text-primary: #e8e6de;
+      --color-text-secondary: #9c9a92;
+      --color-text-tertiary: #6b6a63;
+      --color-border-tertiary: rgba(255,255,255,0.1);
+      --color-border-secondary: rgba(255,255,255,0.2);
+      --color-border-primary: rgba(255,255,255,0.35);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    padding: 2rem;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 20px; }
+  .tab-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab-btn {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--font-sans);
+  }
+  .tab-btn.active {
+    background: var(--color-background-primary);
+    border-color: var(--color-border-primary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+  .method-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .method-card:hover { border-color: var(--color-border-secondary); }
+  .method-card.expanded { border-color: var(--color-border-primary); }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+    font-weight: 500;
+  }
+  .card-header { display: flex; align-items: flex-start; gap: 10px; }
+  .card-icon { font-size: 20px; line-height: 1.3; }
+  .card-body { flex: 1; }
+  .card-title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+  .card-title-text { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .card-summary { font-size: 13px; color: var(--color-text-secondary); }
+  .card-arrow { font-size: 12px; color: var(--color-text-tertiary); flex-shrink: 0; margin-top: 2px; }
+  .card-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--color-border-tertiary); }
+  .card-detail p { font-size: 13px; color: var(--color-text-primary); margin-bottom: 12px; line-height: 1.7; }
+  .try-btn {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all 0.15s;
+  }
+  .try-btn:hover { border-color: var(--color-border-secondary); color: var(--color-text-primary); }
+  .copy-feedback { font-size: 12px; color: var(--color-text-tertiary); margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
+  .copy-feedback.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AI 辅助个人成长与脑力训练全景地图</h1>
+  <p class="subtitle">选择一个方向，探索具体的 AI 使用方式 · 点击卡片展开详情与提示词</p>
+  <div class="tab-bar" id="tab-bar"></div>
+  <div id="content-area"></div>
+</div>
+
+<script>
+const categories = [
+  {
+    label: "🧠 认知与思维",
+    methods: [
+      {
+        title: "苏格拉底式对话训练", icon: "💡", tag: "深度思维",
+        tagColor: "#EEEDFE", tagText: "#534AB7",
+        summary: "让 AI 扮演哲学家，持续追问你的每个观点，逼迫你找出思维漏洞",
+        detail: "告诉 AI：「用苏格拉底式反驳来质疑我说的每一句话，不允许我有模糊表达」。每次你提出一个判断，AI 就追问依据、前提、反例——这比自己反思强 10 倍，因为它不会放过你。",
+        prompt: "用苏格拉底式反驳来质疑我说的每一句话，不允许我有模糊表达。我们开始：「努力工作是成功的关键」"
+      },
+      {
+        title: "第一性原理分解器", icon: "🔩", tag: "逻辑拆解",
+        tagColor: "#E6F1FB", tagText: "#185FA5",
+        summary: "把任何复杂问题交给 AI，让它帮你剥离假设、追溯到最基本的事实",
+        detail: "输入你正在思考的问题，让 AI 用「5个为什么」+ 第一性原理拆解，把所有隐含假设列出来。然后你逐条挑战这些假设，重建更清晰的认知。",
+        prompt: "帮我用第一性原理分解「我应该创业」这个想法，列出所有隐含假设，然后逐一追问每个假设的依据"
+      },
+      {
+        title: "思维模型实战练习", icon: "🗺️", tag: "模型应用",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "把真实问题喂给 AI，让它用不同思维模型（如逆向思维、概率思维）分析",
+        detail: "建立一个「思维模型健身房」：每天描述一个生活/工作困境，让 AI 分别用反转法、贝叶斯、系统思维等 5 种框架解析，帮你看清盲区，逐渐内化这些模型。",
+        prompt: "我遇到了这个问题：[描述你的困境]。请分别用逆向思维、贝叶斯概率、系统思维、机会成本、奥卡姆剃刀这5种思维模型来分析它"
+      },
+      {
+        title: "论点强化 / 辩驳训练", icon: "⚔️", tag: "批判思维",
+        tagColor: "#FCEBEB", tagText: "#A32D2D",
+        summary: "输出你的观点，让 AI 给出最强反驳，然后你再回击",
+        detail: "提示词：「我认为……，现在用你能想到的最强反驳攻击这个观点，不要手软」。来回数轮后，你的观点要么被淬炼得更强，要么你会发现它根本站不住脚——两者都是收获。",
+        prompt: "我认为「远程工作比办公室工作更高效」。现在用你能想到的最强反驳攻击这个观点，不要手软，帮我找到论点的漏洞"
+      }
+    ]
+  },
+  {
+    label: "📚 学习加速",
+    methods: [
+      {
+        title: "费曼技术 AI 助教", icon: "📖", tag: "深度理解",
+        tagColor: "#E6F1FB", tagText: "#185FA5",
+        summary: "学完一个知识点，用自己的话讲给 AI 听，让它指出你理解的漏洞",
+        detail: "「我来解释什么是量子纠缠，你扮演一个12岁的孩子，如果我解释得不清楚或有错误就追问我」。AI 会立刻暴露你以为自己懂、其实没懂的部分，这是最快的内化方式。",
+        prompt: "你扮演一个好奇的12岁孩子。我来向你解释一个概念，如果我解释得不清楚、用了专业术语或有错误，你就追问我，直到你真的听懂为止。我们开始：[你要解释的概念]"
+      },
+      {
+        title: "个性化知识体系构建", icon: "🕸️", tag: "知识图谱",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "让 AI 帮你找到不同领域知识之间的连接点，建立属于自己的知识网络",
+        detail: "描述你已知的知识，让 AI 找到它们之间的类比和桥接概念，并推荐最小集合的「种子知识」来解锁下一层理解。这避免了碎片化学习。",
+        prompt: "我熟悉编程、心理学和商业这三个领域。帮我找到这三个领域之间的深层连接点和共同底层原理，然后推荐5个「种子概念」，学透它们能同时加深我对三个领域的理解"
+      },
+      {
+        title: "间隔重复 + AI 出题", icon: "🔄", tag: "记忆强化",
+        tagColor: "#EEEDFE", tagText: "#534AB7",
+        summary: "让 AI 根据你的学习内容自动生成卡片题目，并判断你的回答质量",
+        detail: "把读书笔记或学习内容粘贴给 AI，让它生成 20 道填空/简答题，然后你作答，AI 评判并给出对应的错误原因分析。远比被动复习记得深。",
+        prompt: "根据以下内容帮我生成20道间隔重复练习题，混合填空题、简答题和应用题三种类型。我答完后请评分并分析错误原因：\n\n[粘贴你的学习内容]"
+      },
+      {
+        title: "多语言沉浸式练习伙伴", icon: "🌍", tag: "语言习得",
+        tagColor: "#FAEEDA", tagText: "#854F0B",
+        summary: "让 AI 全程用目标语言和你对话，即时纠错，模拟真实语言环境",
+        detail: "设定角色：「你是我的法语朋友，我们用法语聊今天发生的事，我犯语法错误时用括号标注出来并给正确表达，但继续对话别中断」。每天30分钟顶得上线下课一节。",
+        prompt: "你是我的法语朋友，我们全程用法语对话。当我犯语法或用词错误时，在你的回复末尾用【纠错】标注出来并给出正确表达，然后继续对话。今天我们聊：我最近的一次旅行"
+      }
+    ]
+  },
+  {
+    label: "🎯 习惯与行为",
+    methods: [
+      {
+        title: "行为设计 AI 教练", icon: "🎯", tag: "习惯建立",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "描述你想建立的习惯，让 AI 根据行为科学为你定制最优实施方案",
+        detail: "输入：你的目标习惯 + 生活作息 + 过去失败的原因，AI 应用「行为=动机×能力×触发」模型，帮你设计最小可执行版本、环境设计和防失效机制。",
+        prompt: "我想建立每天阅读1小时的习惯。我的作息是：[描述你的日程]。过去失败的原因是：[描述原因]。请用福格行为模型帮我设计一套习惯系统，包括最小启动动作、环境设计和失败恢复机制"
+      },
+      {
+        title: "每日复盘对话", icon: "🌙", tag: "反思加速",
+        tagColor: "#FCEBEB", tagText: "#A32D2D",
+        summary: "每天结束时和 AI 进行10分钟结构化复盘，提炼模式和改进行动",
+        detail: "建立固定模板：「今天发生了什么让我有情绪？我的应对是否符合我的价值观？明天我会做一件什么不同的事？」AI 记住你过去的复盘，能帮你发现跨天的行为模式。",
+        prompt: "帮我进行今天的结构化复盘。请依次问我以下问题，每次我回答后再问下一个：1)今天最重要的事完成了吗？2)什么情况让我有强烈情绪，我是如何应对的？3)我的应对符合我想成为的人吗？4)明天我会做一件什么不同的事？"
+      },
+      {
+        title: "「未来自我」对话", icon: "🔮", tag: "身份重塑",
+        tagColor: "#EEEDFE", tagText: "#534AB7",
+        summary: "让 AI 扮演5年后的你，从未来视角给现在的你提建议",
+        detail: "描述你的现状和目标，让 AI 扮演「5年后已经实现目标的你」，回答你今天的困惑。这个技巧帮助跨越身份认知的障碍——行动往往不是因为缺乏方法，而是不认为自己是那种人。",
+        prompt: "我现在的状态：[描述你的现状]。我希望5年后成为：[描述目标]。请你扮演5年后已经实现了这些目标的我，用第一人称回答我现在的问题：我现在最应该做的3件事是什么？我在逃避什么？"
+      },
+      {
+        title: "阻力分析与障碍清除", icon: "🚧", tag: "执行力",
+        tagColor: "#FAEEDA", tagText: "#854F0B",
+        summary: "当你拖延某件事时，让 AI 帮你挖掘真正的阻力根源并制定清除方案",
+        detail: "「我一直拖延做XX，不是因为不知道方法。帮我分析可能的真实原因（恐惧、完美主义、身份冲突等），然后给我5个最小阻力行动」。精准找到卡点比努力更有效。",
+        prompt: "我一直拖延做这件事：[描述你拖延的事]。我知道怎么做，但就是不做。帮我分析5种可能的深层原因（恐惧失败、完美主义、身份冲突、隐性收益、情绪消耗），然后针对最可能的原因给我3个最小阻力行动"
+      }
+    ]
+  },
+  {
+    label: "💬 表达与创造",
+    methods: [
+      {
+        title: "写作教练与思想提炼", icon: "✍️", tag: "表达力",
+        tagColor: "#FBEAF0", tagText: "#993556",
+        summary: "把你的粗糙想法告诉 AI，让它帮你提炼核心观点并强化表达逻辑",
+        detail: "不要让 AI 直接帮你写，而是：先自己写一遍，然后让 AI 分析「核心论点是否清晰、逻辑是否连贯、哪些表达是废话」。你学到的是思维提炼，而不是文字输出。",
+        prompt: "请分析我这段文字，不要帮我重写，只指出：1)核心论点是什么，是否清晰；2)逻辑结构是否连贯，哪里有跳跃；3)哪些句子是废话可以删除；4)读者最可能在哪里感到困惑。\n\n[粘贴你的文字]"
+      },
+      {
+        title: "即兴演讲 / 讲解练习", icon: "🎤", tag: "表达训练",
+        tagColor: "#E6F1FB", tagText: "#185FA5",
+        summary: "让 AI 随机给出一个主题，你即兴讲2分钟，AI 评估逻辑性和说服力",
+        detail: "「给我一个随机话题，我来即兴解释一分钟，你从逻辑结构、具体性、吸引力三个维度打分并给建议」。这训练的是把知识实时转化为清晰表达的能力——这在职场和社交中价值极高。",
+        prompt: "给我一个随机话题（可以是任何领域），我来即兴解释2分钟。我说完后，请从以下维度评分(1-10)并给出具体改进建议：1)逻辑结构清晰度；2)例子和细节的具体性；3)开头是否吸引人；4)整体说服力"
+      },
+      {
+        title: "创意发散与收敛", icon: "🌊", tag: "创造力",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "用 AI 做创意头脑风暴伙伴，先极端发散，再帮你收敛出最有价值的想法",
+        detail: "第一轮：「给我50个关于XX的疯狂想法，越荒谬越好」。第二轮：「从这50个里，哪5个有最高的创新性×可行性？用SCAMPER法强化它们」。AI 帮你突破自我审查。",
+        prompt: "关于这个主题：[你的主题]，先给我30个想法，越疯狂越好，不要自我审查。然后从中选出3个创新性×可行性最高的，用SCAMPER框架（替换、合并、改造、消除、重组）各强化一遍"
+      },
+      {
+        title: "跨领域类比生成器", icon: "🔗", tag: "联想思维",
+        tagColor: "#EEEDFE", tagText: "#534AB7",
+        summary: "把你的专业问题，让 AI 用完全不同领域的类比来解释",
+        detail: "「用音乐作曲的方式来解释产品迭代」「用生态系统来解释组织管理」。这类跨域类比会激活全新的神经连接，帮你找到别人看不到的解决方案。",
+        prompt: "用5个完全不同领域的类比来解释「[你的概念]」——比如用生态学、音乐、建筑、厨艺、运动各解释一遍。每个类比后说明这个视角揭示了什么别的视角看不到的东西"
+      }
+    ]
+  },
+  {
+    label: "🔬 自我认知",
+    methods: [
+      {
+        title: "认知偏见探测器", icon: "🪞", tag: "自我觉察",
+        tagColor: "#EAF3DE", tagText: "#3B6D11",
+        summary: "描述你做的一个决策或持有的一个信念，让 AI 分析你可能存在的认知偏见",
+        detail: "「我做了这个决定……请分析我可能受到哪些认知偏见影响（确认偏见、损失厌恶、光环效应等），并举出具体证据」。这是拥有私人心理学教授的感觉。",
+        prompt: "我做了这个决定/持有这个信念：[描述]。请分析我可能受到了哪些认知偏见的影响，从以下方向检查：确认偏见、损失厌恶、现状偏见、光环效应、可得性启发、过度自信。对每种可能的偏见举出具体证据"
+      },
+      {
+        title: "价值观澄清对话", icon: "⚖️", tag: "价值澄清",
+        tagColor: "#FAEEDA", tagText: "#854F0B",
+        summary: "通过 AI 设计的深度问题，挖掘出你真正在乎的东西 vs 社会期待",
+        detail: "让 AI 问你一系列「为什么」层叠问题，一直到你找到最深层的价值观。很多人活在别人的价值体系里而不自知，这个练习能帮你找到真正的北极星。",
+        prompt: "帮我做一次价值观澄清练习。用层叠追问法——每次我回答后，你问「那对你来说，这意味着什么？」或「为什么这对你重要？」，持续追问7轮，帮我找到最深层的核心价值。从这个问题开始：「你最近做了什么事感到真正满足？」"
+      },
+      {
+        title: "情绪模式日志分析", icon: "📊", tag: "情绪智能",
+        tagColor: "#FCEBEB", tagText: "#A32D2D",
+        summary: "把一周的情绪记录喂给 AI，让它发现你的触发模式和应对规律",
+        detail: "每天用一两句话记录「事件 → 情绪 → 反应」，周末把7条记录给 AI 分析。它会找出你还没意识到的模式：「你每次面对评价时都会出现防御反应，这可能来自……」",
+        prompt: "以下是我这周的情绪记录（格式：事件→情绪→我的反应）：\n\n[粘贴你的7条记录]\n\n请分析：1)反复出现的情绪触发模式；2)我的应对方式有哪些规律；3)哪些情境让我表现最好/最差；4)你观察到什么我可能没意识到的模式"
+      },
+      {
+        title: "人格盲点揭示对话", icon: "🔍", tag: "盲点识别",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "描述你的行为习惯，让 AI 从不同人格框架分析你的盲点和成长边界",
+        detail: "结合你熟悉的框架（MBTI/大五人格/九型人格），描述你的行为习惯，让 AI 分析你「过度使用的优势」是如何变成阻碍的，以及你最需要发展的对立面能力。",
+        prompt: "我的行为习惯：[描述3-5个你的典型行为模式]。请分析：1)我最常过度使用的优势是什么，它在什么情况下反而成为阻碍；2)我最可能忽视或贬低的能力是什么；3)我的「成长边界」——突破哪一点会带来最大的跃升"
+      }
+    ]
+  },
+  {
+    label: "⚡ 决策与执行",
+    methods: [
+      {
+        title: "决策框架应用教练", icon: "🎲", tag: "决策质量",
+        tagColor: "#FAEEDA", tagText: "#854F0B",
+        summary: "面对重要决策时，让 AI 引导你用结构化框架全面评估，避免冲动或拖延",
+        detail: "输入你的决策困境，AI 引导你过：决策标准是什么→有哪些选项→每个选项的期望值和风险→你的情绪在干扰哪里→一个月后哪个决定会让你更少后悔。系统化取代直觉。",
+        prompt: "我面临这个决策：[描述你的决策]。请用结构化框架帮我分析：1)这个决策真正的标准是什么（不是表面原因）；2)我可能忽略了哪些选项；3)每个主要选项的期望值和最坏情况；4)我的情绪正在如何影响判断；5)一年后回看，哪个选择会让我更少后悔"
+      },
+      {
+        title: "优先级澄清 + 深度工作规划", icon: "📐", tag: "时间智慧",
+        tagColor: "#E1F5EE", tagText: "#0F6E56",
+        summary: "把你的任务清单交给 AI，用影响力矩阵重新排序，找出真正重要的少数",
+        detail: "「这是我所有待办事项，帮我识别哪些是高杠杆活动、哪些是假忙碌、哪些可以删除。基于此给我今天和本周的最优顺序」。大多数人忙的都不是最重要的事。",
+        prompt: "这是我所有的待办事项：[列出你的任务清单]。请帮我：1)识别哪些是真正高杠杆的活动（做了会改变整体局面）；2)哪些是「假忙碌」（感觉在做事但影响很小）；3)哪些可以删除或委托；4)给我今天最优的3件事排序"
+      },
+      {
+        title: "预验尸法（Pre-mortem）", icon: "🔭", tag: "风险预见",
+        tagColor: "#FCEBEB", tagText: "#A32D2D",
+        summary: "在开始一个计划前，让 AI 扮演「未来的失败」，倒推所有可能出错的地方",
+        detail: "「假设今天是一年后，我的这个计划彻底失败了。请从5个维度分析最可能的失败原因」。这个前置复盘让你提前修复致命漏洞，比事后后悔成本低100倍。",
+        prompt: "我的计划是：[描述你的计划]。假设今天是一年后，这个计划彻底失败了。请从以下5个维度分析最可能的失败原因：1)执行层面；2)假设错误；3)外部变化；4)人的因素；5)我低估的事情。然后告诉我现在最应该预防的3个风险"
+      },
+      {
+        title: "执行系统设计师", icon: "⚙️", tag: "系统化",
+        tagColor: "#EEEDFE", tagText: "#534AB7",
+        summary: "描述你的目标，让 AI 帮你设计可重复的执行系统而非单次计划",
+        detail: "区别：计划是「下周一开始健身」，系统是「每个工作日我的触发条件是XX、执行仪式是XX、完成信号是XX、故障恢复机制是XX」。AI 帮你把目标变成机器。",
+        prompt: "我的目标是：[描述目标]。不要给我一个计划，帮我设计一个可重复运行的执行系统，包括：1)触发条件（什么信号启动这个行为）；2)最小执行仪式；3)完成信号（怎么知道今天做到了）；4)故障恢复机制（失败一次后如何重启）；5)每月如何迭代优化"
+      }
+    ]
+  }
+];
+
+let expandedCard = null;
+let currentCat = 0;
+
+function init() {
+  const tabBar = document.getElementById('tab-bar');
+  categories.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = cat.label;
+    btn.onclick = () => showCategory(i);
+    tabBar.appendChild(btn);
+  });
+  renderMethods(0);
+}
+
+function showCategory(idx) {
+  currentCat = idx;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  expandedCard = null;
+  renderMethods(idx);
+}
+
+function renderMethods(idx) {
+  const cat = categories[idx];
+  const area = document.getElementById('content-area');
+  area.innerHTML = cat.methods.map((m, i) => `
+    <div class="method-card" id="card-${i}" onclick="toggleCard(${i})">
+      <div class="card-header">
+        <span class="card-icon">${m.icon}</span>
+        <div class="card-body">
+          <div class="card-title">
+            <span class="card-title-text">${m.title}</span>
+            <span class="tag" style="background:${m.tagColor};color:${m.tagText}">${m.tag}</span>
+          </div>
+          <p class="card-summary">${m.summary}</p>
+        </div>
+        <span class="card-arrow" id="arrow-${i}">▼</span>
+      </div>
+      <div class="card-detail" id="detail-${i}">
+        <p>${m.detail}</p>
+        <button class="try-btn" onclick="event.stopPropagation();copyPrompt(this, '${encodeURIComponent(m.prompt)}')">复制提示词 ↗</button>
+        <span class="copy-feedback" id="feedback-${i}">已复制！</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(i) {
+  const detail = document.getElementById('detail-' + i);
+  const arrow = document.getElementById('arrow-' + i);
+  const card = document.getElementById('card-' + i);
+  const isOpen = detail.style.display === 'block';
+  if (expandedCard !== null && expandedCard !== i) {
+    document.getElementById('detail-' + expandedCard).style.display = 'none';
+    document.getElementById('arrow-' + expandedCard).textContent = '▼';
+    document.getElementById('card-' + expandedCard).classList.remove('expanded');
+  }
+  detail.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▼' : '▲';
+  card.classList.toggle('expanded', !isOpen);
+  expandedCard = isOpen ? null : i;
+}
+
+function copyPrompt(btn, encoded) {
+  const text = decodeURIComponent(encoded);
+  navigator.clipboard.writeText(text).then(() => {
+    const i = btn.closest('.method-card').id.replace('card-', '');
+    const fb = document.getElementById('feedback-' + i);
+    fb.classList.add('show');
+    setTimeout(() => fb.classList.remove('show'), 2000);
+  });
+}
+
+init();
+</script>
+</body>
+</html>
