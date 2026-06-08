@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 时代开发工作流</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ink: #2C2C2C;
+    --border: #2C2C2C;
+    --border-w: 3px;
+    --shadow-x: 4px;
+    --shadow-y: 4px;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+    --bg-base: #FFF9F0;
+    --bg-card: #FFFFFF;
+    --bg-pink: #FFF0F6;
+    --bg-green: #F0FFF4;
+    --bg-blue: #F0F8FF;
+    --bg-yellow: #FFFAF0;
+    --green: #52C41A;
+    --green-dark: #237804;
+    --yellow: #FFD93D;
+    --red: #FA5252;
+    --blue: #4DABF7;
+    --font: 'Baloo 2', 'Noto Sans SC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-base);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== Illustration Box ========== */
+  .illu-box {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--border);
+    transition: all 0.2s ease;
+  }
+  .illu-box:hover {
+    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .illu-box-sm {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0 var(--border);
+  }
+
+  /* ========== 顶部导航 ========== */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-base);
+    border-bottom: var(--border-w) solid var(--border);
+    box-shadow: 0 3px 0 var(--border);
+    padding: 0 24px;
+  }
+  .topbar-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .topbar-brand {
+    font-size: 1.3rem; font-weight: 800; color: var(--ink);
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+    letter-spacing: -0.02em;
+  }
+  .topbar-brand .logo {
+    width: 40px; height: 40px;
+    background: var(--green); border: var(--border-w) solid var(--border);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800; color: white;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .topbar-links { display: flex; gap: 6px; }
+  .topbar-link {
+    padding: 8px 16px; border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 0.9rem; color: var(--ink);
+    text-decoration: none; transition: all 0.2s;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .topbar-link:hover, .topbar-link.active {
+    background: var(--ink); color: white;
+  }
+  .topbar-badge {
+    background: var(--yellow); color: var(--ink);
+    font-size: 0.65rem; font-weight: 800; padding: 2px 7px;
+    border-radius: 20px; border: 2px solid var(--border);
+    margin-left: 4px;
+  }
+
+  /* ========== Hero ========== */
+  .hero {
+    max-width: 1200px; margin: 0 auto;
+    padding: 60px 24px 40px;
+    display: flex; align-items: center; gap: 48px;
+  }
+  .hero-text { flex: 1; }
+  .hero-text h1 {
+    font-size: 2.8rem; font-weight: 800; line-height: 1.1;
+    color: var(--ink); letter-spacing: -0.03em;
+    margin-bottom: 16px;
+  }
+  .hero-text h1 .highlight {
+    background: var(--yellow); padding: 0 8px;
+    border: var(--border-w) solid var(--border);
+    border-radius: 8px; display: inline-block;
+  }
+  .hero-text p {
+    font-size: 1.1rem; color: #555; font-weight: 500;
+    margin-bottom: 24px; max-width: 480px;
+  }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-illu {
+    padding: 12px 28px; border-radius: var(--radius-sm);
+    font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border: var(--border-w) solid var(--border);
+    transition: all 0.15s; text-decoration: none; display: inline-flex;
+    align-items: center; gap: 8px;
+  }
+  .btn-illu.primary {
+    background: var(--green); color: white;
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--border);
+  }
+  .btn-illu.primary:hover { box-shadow: 6px 6px 0 var(--border); transform: translate(-1px,-1px); }
+  .btn-illu.ghost {
+    background: var(--bg-card); color: var(--ink);
+    box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--border);
+  }
+  .btn-illu.ghost:hover { box-shadow: 6px 6px 0 var(--border); transform: translate(-1px,-1px); }
+
+  /* Hero illustration */
+  .hero-illust {
+    flex: 0 0 360px; position: relative;
+  }
+  .hero-illust svg { width: 100%; }
+  .illo-circle {
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ========== Section ========== */
+  .section { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+  .section-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 32px; padding-bottom: 16px;
+    border-bottom: var(--border-w) solid var(--border);
+  }
+  .section-head h2 {
+    font-size: 1.6rem; font-weight: 800; color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .section-head .tag {
+    background: var(--yellow); padding: 2px 12px;
+    border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+    border: 2px solid var(--border);
+  }
+
+  /* ========== Pipeline ========== */
+  .pipeline-wrap { position: relative; }
+  .pipeline-track {
+    position: absolute; left: 28px; top: 0; bottom: 0;
+    width: 4px; border-radius: 2px;
+    background: #D0C8B8;
+  }
+  .stage-card {
+    position: relative; padding: 0 0 32px 72px; cursor: pointer;
+  }
+  .stage-dot {
+    position: absolute; left: 16px; top: 6px;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: var(--border-w) solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; z-index: 2;
+    transition: all 0.3s ease;
+  }
+  .stage-dot.green { background: var(--green); color: white; }
+  .stage-dot.blue { background: var(--blue); color: white; }
+  .stage-dot.yellow { background: var(--yellow); color: var(--ink); }
+  .stage-dot.red { background: var(--red); color: white; }
+
+  /* Spotlight glow for active dot */
+  .stage-card.expanded .stage-dot {
+    width: 34px; height: 34px; left: 13px; top: 3px;
+    border-width: 3px;
+    z-index: 5;
+  }
+  .stage-card.expanded .stage-dot.green {
+    box-shadow: 0 0 12px 4px rgba(82,196,26,0.5), 0 0 30px 8px rgba(82,196,26,0.2), 0 4px 20px 4px rgba(82,196,26,0.3), 0 -4px 20px 4px rgba(82,196,26,0.3);
+    animation: dotPulseGreen 2s ease-in-out infinite;
+  }
+  .stage-card.expanded .stage-dot.blue {
+    box-shadow: 0 0 12px 4px rgba(77,171,247,0.5), 0 0 30px 8px rgba(77,171,247,0.2), 0 4px 20px 4px rgba(77,171,247,0.3), 0 -4px 20px 4px rgba(77,171,247,0.3);
+    animation: dotPulseBlue 2s ease-in-out infinite;
+  }
+  .stage-card.expanded .stage-dot.yellow {
+    box-shadow: 0 0 12px 4px rgba(255,217,61,0.5), 0 0 30px 8px rgba(255,217,61,0.2), 0 4px 20px 4px rgba(255,217,61,0.3), 0 -4px 20px 4px rgba(255,217,61,0.3);
+    animation: dotPulseYellow 2s ease-in-out infinite;
+  }
+  .stage-card.expanded .stage-dot.red {
+    box-shadow: 0 0 12px 4px rgba(250,82,82,0.5), 0 0 30px 8px rgba(250,82,82,0.2), 0 4px 20px 4px rgba(250,82,82,0.3), 0 -4px 20px 4px rgba(250,82,82,0.3);
+    animation: dotPulseRed 2s ease-in-out infinite;
+  }
+
+  @keyframes dotPulseGreen {
+    0%, 100% { box-shadow: 0 0 12px 4px rgba(82,196,26,0.5), 0 0 30px 8px rgba(82,196,26,0.2), 0 4px 20px 4px rgba(82,196,26,0.25), 0 -4px 20px 4px rgba(82,196,26,0.25); }
+    50% { box-shadow: 0 0 18px 6px rgba(82,196,26,0.6), 0 0 40px 12px rgba(82,196,26,0.3), 0 6px 30px 6px rgba(82,196,26,0.35), 0 -6px 30px 6px rgba(82,196,26,0.35); }
+  }
+  @keyframes dotPulseBlue {
+    0%, 100% { box-shadow: 0 0 12px 4px rgba(77,171,247,0.5), 0 0 30px 8px rgba(77,171,247,0.2), 0 4px 20px 4px rgba(77,171,247,0.25), 0 -4px 20px 4px rgba(77,171,247,0.25); }
+    50% { box-shadow: 0 0 18px 6px rgba(77,171,247,0.6), 0 0 40px 12px rgba(77,171,247,0.3), 0 6px 30px 6px rgba(77,171,247,0.35), 0 -6px 30px 6px rgba(77,171,247,0.35); }
+  }
+  @keyframes dotPulseYellow {
+    0%, 100% { box-shadow: 0 0 12px 4px rgba(255,217,61,0.5), 0 0 30px 8px rgba(255,217,61,0.2), 0 4px 20px 4px rgba(255,217,61,0.25), 0 -4px 20px 4px rgba(255,217,61,0.25); }
+    50% { box-shadow: 0 0 18px 6px rgba(255,217,61,0.6), 0 0 40px 12px rgba(255,217,61,0.3), 0 6px 30px 6px rgba(255,217,61,0.35), 0 -6px 30px 6px rgba(255,217,61,0.35); }
+  }
+  @keyframes dotPulseRed {
+    0%, 100% { box-shadow: 0 0 12px 4px rgba(250,82,82,0.5), 0 0 30px 8px rgba(250,82,82,0.2), 0 4px 20px 4px rgba(250,82,82,0.25), 0 -4px 20px 4px rgba(250,82,82,0.25); }
+    50% { box-shadow: 0 0 18px 6px rgba(250,82,82,0.6), 0 0 40px 12px rgba(250,82,82,0.3), 0 6px 30px 6px rgba(250,82,82,0.35), 0 -6px 30px 6px rgba(250,82,82,0.35); }
+  }
+
+  /* Spotlight cone on expanded card body */
+  .stage-card .card-body {
+    padding: 20px 24px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stage-card .card-body::before {
+    content: '';
+    position: absolute;
+    left: -24px; top: 50%;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, width 0.5s ease, height 0.5s ease;
+  }
+  .stage-card.expanded .card-body::before {
+    opacity: 1;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(var(--spot-color, 82,196,26),0.08) 0%, transparent 70%);
+  }
+  .stage-card.expanded .card-body:hover::before { opacity: 0; }
+
+  /* Spotlight cone overlay on expanded detail */
+  .stage-detail {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    border: var(--border-w) solid transparent;
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--bg-pink);
+    padding: 0 24px;
+    box-shadow: 4px 4px 0 var(--border);
+    margin-top: -1px;
+    position: relative;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                padding 0.4s ease,
+                border-color 0.3s ease;
+  }
+  /* Spotlight cone from timeline side */
+  .stage-detail::after {
+    content: '';
+    position: absolute;
+    left: -24px; top: -10px;
+    width: 160px; height: 100%;
+    background: radial-gradient(ellipse at 0% 50%, rgba(var(--spot-color, 82,196,26),0.07) 0%, transparent 80%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.15s;
+  }
+  /* Spotlight radial glow inside detail */
+  .stage-detail::before {
+    content: '';
+    position: absolute;
+    left: -40px; top: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--spot-color, 82,196,26),0.06) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.2s;
+  }
+  .stage-card.expanded .stage-detail {
+    max-height: 600px;
+    opacity: 1;
+    padding: 20px 24px;
+    border-color: var(--border);
+  }
+  .stage-card.expanded .stage-detail::before {
+    opacity: 1;
+  }
+  .stage-card.expanded .stage-detail::after {
+    opacity: 1;
+  }
+  .stage-card .card-body:hover {
+    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .stage-toggle {
+    flex-shrink: 0; width: 32px; height: 32px;
+    border-radius: 50%; border: var(--border-w) solid var(--border);
+    background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 800;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .stage-card.expanded .stage-toggle {
+    transform: rotate(90deg);
+    background: var(--yellow);
+  }
+  .stage-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .stage-top .stage-id {
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em;
+    text-transform: uppercase; color: #888;
+  }
+  .stage-top h3 { font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .stage-desc { font-size: 0.92rem; color: #666; font-weight: 500; }
+  .stage-card.expanded .card-body {
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .detail-block {
+    padding: 14px 18px;
+  }
+  /* Vertical center line */
+  .detail-block:nth-child(2n-1) {
+    border-right: 1px dashed #D0C8B8;
+  }
+  /* Horizontal center line */
+  .detail-block:nth-child(1),
+  .detail-block:nth-child(2) {
+    border-bottom: 1px dashed #D0C8B8;
+  }
+  .detail-block h4 {
+    font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #888; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .detail-block h4 .icon-input { color: var(--blue); }
+  .detail-block h4 .icon-output { color: var(--green-dark); }
+  .detail-block ul { list-style: none; }
+  .detail-block li {
+    padding: 4px 0; font-size: 0.88rem; font-weight: 500; color: #444;
+  }
+  .detail-block li::before { content: '→  '; font-weight: 800; }
+  .role-badge {
+    display: inline-block; padding: 2px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+    border: 2px solid var(--border);
+  }
+  .badge-ai { background: var(--bg-blue); color: var(--blue); }
+  .badge-human { background: var(--bg-green); color: var(--green-dark); }
+  .tips-block {
+    background: var(--bg-yellow); border: var(--border-w) solid var(--border);
+    border-radius: var(--radius-sm); padding: 16px;
+    box-shadow: 2px 2px 0 var(--border);
+    margin-top: 16px;
+  }
+  .tips-block h4 { font-size: 0.82rem; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+  .tips-block li { font-size: 0.88rem; font-weight: 500; color: #555; padding: 3px 0; }
+  .tips-block li::before { content: '💡 '; }
+
+  .tools-block {
+    background: var(--bg-card); border: var(--border-w) solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    box-shadow: 2px 2px 0 var(--border);
+    margin-top: 12px;
+  }
+  .tools-block h4 { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 8px; }
+
+  /* ========== Paradigm Cards ========== */
+  .paradigm-list {
+    display: flex; flex-direction: column;
+    gap: 16px;
+  }
+  .paradigm-card {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 4px 4px 0 var(--border);
+    padding: 24px 28px; cursor: pointer;
+    transition: box-shadow 0.25s ease, transform 0.25s ease, background 0.3s ease;
+    position: relative;
+  }
+  .paradigm-card:hover {
+    box-shadow: 6px 6px 0 var(--border); transform: translate(-1px,-1px);
+  }
+  .paradigm-card.expanded {
+    background: var(--bg-pink);
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  .paradigm-header {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .paradigm-card .emoji { font-size: 2.4rem; flex-shrink: 0; }
+  .paradigm-card .p-info { flex: 1; }
+  .paradigm-card .p-name {
+    font-size: 1.2rem; font-weight: 800; color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .paradigm-card .p-tagline { font-size: 0.9rem; color: #666; font-weight: 500; }
+  .paradigm-card .p-toggle {
+    flex-shrink: 0; width: 36px; height: 36px;
+    border-radius: 50%; border: var(--border-w) solid var(--border);
+    background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 800;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .paradigm-card.expanded .p-toggle {
+    transform: rotate(180deg);
+    background: var(--yellow);
+  }
+  .maturity-badge {
+    display: inline-block; padding: 3px 12px; border-radius: 20px;
+    font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+    border: 2px solid var(--border);
+    margin-left: 8px; vertical-align: middle;
+  }
+  .maturity-badge.mainstream { background: var(--bg-green); color: var(--green-dark); }
+  .maturity-badge.growing { background: #E0F0FF; color: #1A73E8; }
+  .maturity-badge.emerging { background: var(--bg-yellow); color: #B8860B; }
+  .paradigm-detail {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: var(--border-w) dashed transparent;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                margin-top 0.35s ease,
+                padding-top 0.35s ease,
+                border-top-color 0.3s ease;
+  }
+  .paradigm-card.expanded .paradigm-detail {
+    max-height: 800px;
+    opacity: 1;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top-color: var(--border);
+  }
+  .paradigm-detail p { font-size: 0.9rem; color: #555; font-weight: 500; margin-bottom: 12px; line-height: 1.6; }
+  .paradigm-detail h4 { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; color: #888; margin: 10px 0 6px; letter-spacing: 0.05em; }
+  .paradigm-detail ul { list-style: none; }
+  .paradigm-detail li { font-size: 0.88rem; font-weight: 500; color: #444; padding: 3px 0; }
+  .paradigm-detail li::before { content: '✦  '; }
+  .tool-chip {
+    display: inline-block; padding: 4px 12px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 700;
+    border: 2px solid var(--border); background: var(--bg-base);
+    margin: 3px 4px 3px 0; display: inline-block;
+  }
+  .risk-item { color: var(--red) !important; }
+  .risk-item::before { content: '⚠️ ' !important; }
+
+  /* ========== Tool Cards (replacing table for AI Coding Tools) ========== */
+  .tool-cards {
+    display: flex; flex-direction: column;
+    gap: 12px; margin-bottom: 24px;
+  }
+  .tool-card {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .tool-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .tool-card-header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px; cursor: pointer;
+  }
+  .tool-card-icon {
+    flex-shrink: 0; width: 44px; height: 44px;
+    border-radius: var(--radius-sm); border: var(--border-w) solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800;
+  }
+  .tool-card-icon.ide { background: var(--bg-blue); }
+  .tool-card-icon.cli { background: var(--bg-green); }
+  .tool-card-icon.plugin { background: var(--bg-yellow); }
+  .tool-card-info { flex: 1; }
+  .tool-card-name {
+    font-size: 1.05rem; font-weight: 800; color: var(--ink);
+  }
+  .tool-card-sub {
+    font-size: 0.82rem; color: #888; font-weight: 600;
+  }
+  .tool-card-stars { font-size: 0.85rem; color: var(--yellow); font-weight: 800; }
+  .tool-card-toggle {
+    flex-shrink: 0; width: 32px; height: 32px;
+    border-radius: 50%; border: var(--border-w) solid var(--border);
+    background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 800;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .tool-card.expanded .tool-card-toggle {
+    transform: rotate(180deg);
+    background: var(--yellow);
+  }
+  .tool-card.expanded .tool-card-header {
+    background: var(--bg-blue);
+  }
+  .tool-card-detail {
+    overflow: hidden;
+    max-height: 0; opacity: 0;
+    border-top: var(--border-w) dashed transparent;
+    padding: 0 24px;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                padding 0.4s ease,
+                border-top-color 0.3s ease;
+  }
+  .tool-card.expanded .tool-card-detail {
+    max-height: 800px; opacity: 1;
+    padding: 20px 24px;
+    border-top-color: var(--border);
+  }
+  .tool-card-detail h4 {
+    font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #888; margin: 12px 0 6px;
+  }
+  .tool-card-detail h4:first-child { margin-top: 0; }
+  .tool-card-detail ul { list-style: none; }
+  .tool-card-detail li {
+    padding: 4px 0; font-size: 0.88rem; font-weight: 500; color: #444;
+  }
+  .tool-card-detail li::before { content: '✦  '; }
+  .best-practice-tag {
+    display: inline-block; padding: 2px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+    border: 2px solid var(--border); background: var(--bg-yellow); color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .tool-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.82rem; font-weight: 700; color: var(--blue);
+    text-decoration: none; border-bottom: 2px solid var(--blue);
+    transition: color 0.15s;
+  }
+  .tool-link:hover { color: var(--green-dark); border-color: var(--green-dark); }
+
+  /* ========== Feed ========== */
+  .feed-search {
+    position: relative; margin-bottom: 20px;
+  }
+  .feed-search input {
+    width: 100%; padding: 14px 16px 14px 48px;
+    border: var(--border-w) solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg-card); color: var(--ink); font-size: 0.95rem;
+    font-family: var(--font); font-weight: 600;
+    box-shadow: 2px 2px 0 var(--border); outline: none;
+    transition: all 0.2s;
+  }
+  .feed-search input:focus {
+    box-shadow: 4px 4px 0 var(--border); transform: translate(-1px,-1px);
+  }
+  .feed-search .search-icon {
+    position: absolute; left: 16px; top: 50%;
+    transform: translateY(-50%); font-size: 1.1rem;
+  }
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 8px 16px; border-radius: 20px;
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-card); color: var(--ink);
+    font-family: var(--font); font-weight: 700; font-size: 0.82rem;
+    cursor: pointer; transition: all 0.15s;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--ink); color: white;
+  }
+  .feed-item {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 4px 4px 0 var(--border);
+    padding: 20px 24px; margin-bottom: 16px;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none; color: inherit;
+    display: block;
+  }
+  .feed-item:hover { box-shadow: 6px 6px 0 var(--border); transform: translate(-1px,-1px); }
+  .feed-item .external-arrow {
+    font-size: 0.8rem; color: var(--blue); opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-block; margin-left: 6px;
+  }
+  .feed-item:hover .external-arrow {
+    opacity: 1; transform: translate(2px, -2px);
+  }
+  .feed-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+  .feed-platform {
+    padding: 2px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+    border: 2px solid var(--border);
+  }
+  .pf-x { background: #E8F5E9; color: var(--green-dark); }
+  .pf-reddit { background: #FFF0E8; color: #FF4500; }
+  .pf-medium { background: var(--bg-green); color: var(--green-dark); }
+  .pf-hn { background: #FFF8E1; color: #F57C00; }
+  .pf-arxiv { background: #F3E5F5; color: #7B1FA2; }
+  .feed-date { font-size: 0.78rem; color: #999; font-weight: 600; }
+  .feed-author { font-size: 0.78rem; color: #999; font-weight: 600; }
+  .feed-item h3 { font-size: 1.05rem; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+  .feed-item .summary { font-size: 0.9rem; color: #666; font-weight: 500; }
+  .feed-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .feed-tag {
+    padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
+    border: 2px solid var(--border); background: var(--bg-base);
+  }
+
+  /* ========== Footer ========== */
+  .footer {
+    border-top: var(--border-w) solid var(--border);
+    box-shadow: 0 -3px 0 var(--border);
+    padding: 24px; text-align: center;
+    font-size: 0.85rem; color: #999; font-weight: 600;
+  }
+
+  /* ========== Scroll offset for sticky topbar ========== */
+  .section, [id] {
+    scroll-margin-top: 80px;
+  }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 800px) {
+    .hero { flex-direction: column; padding: 32px 16px; }
+    .hero-illust { flex: none; width: 240px; }
+    .hero-text h1 { font-size: 2rem; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .detail-block { border-right: none !important; }
+    .section { padding: 32px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="../index.html" class="topbar-brand">
+      <span class="logo">⚡</span>
+      AI工作流
+    </a>
+    <div class="topbar-links">
+      <a href="#pipeline" class="topbar-link active">管线</a>
+      <a href="#paradigms" class="topbar-link">范式</a>
+      <a href="#toolchain" class="topbar-link">工具</a>
+      <a href="#feed" class="topbar-link">信息流<span class="topbar-badge" id="feed-count"></span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>
+      <span class="highlight">Agentic</span><br>
+      开发工作流
+    </h1>
+    <p>追踪业内一流 AI 开发方法论，持续整合一线工程师实战分享。数据与视图分离，AI 可直接更新内容。</p>
+    <div class="hero-btns">
+      <a href="#pipeline" class="btn-illu primary">查看管线 →</a>
+      <a href="../local/index.html" class="btn-illu ghost">Local 定制</a>
+    </div>
+  </div>
+  <div class="hero-illust">
+    <!-- Hand-drawn style illustration SVG -->
+    <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="sketchy"><feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5"/></filter>
+      </defs>
+      <!-- Monitor -->
+      <rect x="80" y="60" width="200" height="140" rx="12" fill="#fff" stroke="#2C2C2C" stroke-width="3"/>
+      <rect x="90" y="72" width="180" height="110" rx="6" fill="#F0FFF4"/>
+      <text x="180" y="130" text-anchor="middle" font-size="36" font-weight="800" fill="#52C41A" font-family="Baloo 2">{'}'}</text>
+      <rect x="152" y="200" width="56" height="12" rx="4" fill="#fff" stroke="#2C2C2C" stroke-width="3"/>
+      <rect x="120" y="212" width="120" height="8" rx="3" fill="#fff" stroke="#2C2C2C" stroke-width="2"/>
+      <!-- Floating code blocks -->
+      <rect x="30" y="100" width="60" height="36" rx="8" fill="#FFF0F6" stroke="#2C2C2C" stroke-width="2.5" class="illo-circle" style="animation-delay:0s"/>
+      <text x="60" y="123" text-anchor="middle" font-size="12" font-weight="700" fill="#2C2C2C" font-family="Baloo 2">AI</text>
+      <rect x="270" y="80" width="70" height="36" rx="8" fill="#F0F8FF" stroke="#2C2C2C" stroke-width="2.5" class="illo-circle" style="animation-delay:1s"/>
+      <text x="305" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="#2C2C2C" font-family="Baloo 2">CODE</text>
+      <rect x="40" y="180" width="56" height="32" rx="8" fill="#FFFAF0" stroke="#2C2C2C" stroke-width="2.5" class="illo-circle" style="animation-delay:2s"/>
+      <text x="68" y="201" text-anchor="middle" font-size="10" font-weight="700" fill="#2C2C2C" font-family="Baloo 2">DEV</text>
+      <!-- Arrow connecting -->
+      <path d="M 90 118 L 70 118" stroke="#2C2C2C" stroke-width="2.5" stroke-dasharray="4,3" fill="none"/>
+      <path d="M 270 98 L 290 98" stroke="#2C2C2C" stroke-width="2.5" stroke-dasharray="4,3" fill="none"/>
+      <!-- Stars / dots decoration -->
+      <circle cx="50" cy="70" r="4" fill="#FFD93D" stroke="#2C2C2C" stroke-width="2"/>
+      <circle cx="320" cy="180" r="4" fill="#4DABF7" stroke="#2C2C2C" stroke-width="2"/>
+      <circle cx="180" cy="40" r="5" fill="#52C41A" stroke="#2C2C2C" stroke-width="2"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Pipeline Section -->
+<div class="section" id="pipeline">
+  <div class="section-head">
+    <h2>🔗 开发管线</h2>
+    <span class="tag">6 Stages</span>
+  </div>
+  <div class="pipeline-wrap">
+    <div class="pipeline-track"></div>
+    <div id="pipeline-container"></div>
+  </div>
+</div>
+
+<!-- Paradigms Section -->
+<div class="section" id="paradigms">
+  <div class="section-head">
+    <h2>🧠 开发范式</h2>
+    <span class="tag">5 Paradigms</span>
+  </div>
+  <div class="paradigm-list" id="paradigm-container"></div>
+</div>
+
+<!-- Toolchain Section -->
+<div class="section" id="toolchain">
+  <div class="section-head">
+    <h2>🛠️ 工具链</h2>
+    <span class="tag">10+ Tools</span>
+  </div>
+  <div id="toolchain-container"></div>
+</div>
+
+<!-- Feed Section -->
+<div class="section" id="feed">
+  <div class="section-head">
+    <h2>📡 信息流</h2>
+    <span class="tag">Live Feed</span>
+  </div>
+  <div class="feed-search">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="feed-search" placeholder="搜索信息流...">
+  </div>
+  <div class="filter-bar" id="feed-filters"></div>
+  <div id="feed-container"></div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>AI 时代开发工作流 · 数据与视图分离 · AI 可直接更新 data.js · 最后更新 2026-06-04</p>
+</div>
+
+<script src="data.js"></script>
+<script>
+// ========== Pipeline ==========
+function renderPipeline() {
+  const c = document.getElementById('pipeline-container');
+  const colors = ['green','blue','yellow','green','blue','yellow'];
+  c.innerHTML = WORKFLOW_DATA.pipeline.stages.map((s, i) => `
+    <div class="stage-card" onclick="toggleStage(this)">
+      <div class="stage-dot ${colors[i % colors.length]}">${s.icon}</div>
+      <div class="illu-box card-body">
+        <div style="flex:1">
+          <div class="stage-top">
+            <span class="stage-id">${s.id}</span>
+            <h3>${s.name}</h3>
+          </div>
+          <div class="stage-desc">${s.description}</div>
+        </div>
+        <div class="stage-toggle">▸</div>
+      </div>
+      <div class="stage-detail">
+        <div class="detail-grid">
+          <div class="detail-block">
+            <h4><span class="icon-input">⇣</span> 输入</h4>
+            <ul>${s.inputs.map(x=>`<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="detail-block">
+            <h4><span class="icon-output">⇡</span> 输出</h4>
+            <ul>${s.outputs.map(x=>`<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="detail-block">
+            <h4><span class="icon-input">⚡</span> AI 职责 <span class="role-badge badge-ai">AI</span></h4>
+            <ul>${s.aiRole.split('，').map(x=>`<li>${x}</li>`).join('')}</ul>
+          </div>
+          <div class="detail-block">
+            <h4><span class="icon-output">🧭</span> 人类职责 <span class="role-badge badge-human">HUMAN</span></h4>
+            <ul>${s.humanRole.split('，').map(x=>`<li>${x}</li>`).join('')}</ul>
+          </div>
+        </div>
+        <div class="tips-block">
+          <h4>💡 实战 Tips</h4>
+          <ul>${s.tips.map(x=>`<li>${x}</li>`).join('')}</ul>
+        </div>
+        <div class="tools-block">
+          <h4>🔧 推荐工具</h4>
+          <div>${(s.tools||[]).map(t=>`<span class="tool-chip">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleStage(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.stage-card.expanded').forEach(c => {
+    if (c !== card) c.classList.remove('expanded');
+    c.style.removeProperty('--spot-color');
+  });
+  card.classList.toggle('expanded', !wasExpanded);
+  if (!wasExpanded) {
+    // Set spotlight color based on dot color
+    const dot = card.querySelector('.stage-dot');
+    const colorMap = {
+      green: '82,196,26',
+      blue: '77,171,247',
+      yellow: '255,217,61',
+      red: '250,82,82'
+    };
+    let rgb = '82,196,26';
+    if (dot) {
+      for (const [cls, val] of Object.entries(colorMap)) {
+        if (dot.classList.contains(cls)) { rgb = val; break; }
+      }
+    }
+    card.style.setProperty('--spot-color', rgb);
+  } else {
+    card.style.removeProperty('--spot-color');
+  }
+}
+
+// ========== Paradigms ==========
+function renderParadigms() {
+  const c = document.getElementById('paradigm-container');
+  c.innerHTML = WORKFLOW_DATA.paradigms.map(p => `
+    <div class="paradigm-card" onclick="toggleParadigm(this)">
+      <div class="paradigm-header">
+        <span class="emoji">${p.emoji}</span>
+        <div class="p-info">
+          <div class="p-name">${p.name}<span class="maturity-badge ${p.maturity}">${
+            p.maturity==='mainstream'?'主流':p.maturity==='growing'?'增长中':'新兴'
+          }</span></div>
+          <div class="p-tagline">${p.tagline}</div>
+        </div>
+        <div class="p-toggle">▾</div>
+      </div>
+      <div class="paradigm-detail">
+        <p>${p.description}</p>
+        <h4>核心实践</h4>
+        <ul>${p.keyPractices.map(x=>`<li>${x}</li>`).join('')}</ul>
+        <h4>代表工具</h4>
+        <div>${(p.tools||[]).map(t=>`<span class="tool-chip">${t}</span>`).join('')}</div>
+        <h4>风险</h4>
+        <ul>${(p.risks||[]).map(x=>`<li class="risk-item">${x}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleParadigm(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  // close all other cards first (accordion)
+  document.querySelectorAll('.paradigm-card.expanded').forEach(c => {
+    if (c !== card) c.classList.remove('expanded');
+  });
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+  } else {
+    card.classList.remove('expanded');
+  }
+}
+
+// ========== Toolchain ==========
+const TOOL_BEST_PRACTICES = {
+  'Cursor': {
+    url: 'https://cursor.sh',
+    iconClass: 'ide',
+    icon: '🖱️',
+    practices: [
+      '配置 .cursorrules 文件定义项目规范、技术栈、编码风格——这是 ROI 最高的配置',
+      '复杂任务前花 30 秒手动 @引用 相关文件，比让 AI 自己猜快 10 倍',
+      '利用三层上下文：全局(.cursorrules) → 会话(@引用) → 隐式(@codebase)',
+      'Composer 模式处理多文件修改，Chat 模式处理单文件/问答',
+      'Agent 模式处理需要终端命令、浏览器调试的复杂多步任务'
+    ],
+    advancedTips: [
+      '@docs 可注入指定文档，@web 可实时搜索网络获取最新信息',
+      '@git 注入最近变更，@terminal 注入终端输出——让 AI 有完整上下文',
+      'Pro 版 $20/mo，14天免费试用，约42%个人开发者认为成本偏高'
+    ],
+    sourceTitle: 'Cursor IDE深度工程指南',
+    sourceUrl: 'https://blog.csdn.net/yonggeit/article/details/160569540'
+  },
+  'Claude Code': {
+    url: 'https://docs.anthropic.com/en/docs/claude-code',
+    iconClass: 'cli',
+    icon: '⌨️',
+    practices: [
+      '不要让 Claude 直接写代码——先用 Research 阶段让 AI 深入理解代码库',
+      '写 CLAUDE.md 项目说明书：常用命令、代码规范、工作流程',
+      'Plan 阶段生成 plan.md：实现方案、修改点、涉及文件、技术权衡',
+      '善用 200K 上下文窗口，直接把完整模块扔进去，别切碎喂',
+      '所有文件操作和命令执行都需确认——安全第一'
+    ],
+    advancedTips: [
+      '提示缓存策略：最稳固内容放最前面，动态对话放最后——最大化跨会话缓存复用',
+      '/compact 压缩上下文，/cost 查看 token 消耗',
+      '2.0 支持智能体团队协作，可自动分派子任务给不同虚拟角色'
+    ],
+    sourceTitle: 'Claude Code 官方最佳实践',
+    sourceUrl: 'https://blog.csdn.net/A123476_10/article/details/161614857'
+  },
+  'GitHub Copilot': {
+    url: 'https://github.com/features/copilot',
+    iconClass: 'plugin',
+    icon: '🐙',
+    practices: [
+      '利用 Copilot Chat 做架构讨论和代码解释，Tab 补全处理样板代码',
+      'Enterprise 版支持知识库索引——团队共享上下文',
+      '配合 GitHub Actions 实现 AI PR Review 自动化',
+      '写好注释和函数签名——Copilot 基于上下文预测，输入越清晰输出越准',
+      '多文件编辑用 Copilot Workspace，单文件用内联补全'
+    ],
+    advancedTips: [
+      'Pro $19/mo，Enterprise $39/mo——企业版有组织级策略管控',
+      'VS Code + Copilot 组合是微软生态最顺滑体验',
+      'Copilot CLI 可在终端生成命令建议'
+    ],
+    sourceTitle: 'GitHub Copilot 官方文档',
+    sourceUrl: 'https://docs.github.com/copilot'
+  },
+  'Windsurf': {
+    url: 'https://codeium.com/windsurf',
+    iconClass: 'ide',
+    icon: '🏄',
+    practices: [
+      'Cascade 多步推理：一个请求可触发 AI 读取→分析→修改→验证的完整链路',
+      '利用 Flow 自动化：AI 可自主运行终端命令并观察输出',
+      'Pro $15/mo，免费版有基础补全能力',
+      '适合需要 AI 自主完成复杂任务链的场景'
+    ],
+    advancedTips: [
+      'Cascade 模式下 AI 会自动分析是否需要终端命令',
+      '基于 VS Code 架构，迁移成本几乎为零'
+    ],
+    sourceTitle: 'Windsurf 官方文档',
+    sourceUrl: 'https://docs.codeium.com/windsurf'
+  },
+  'Aider': {
+    url: 'https://aider.chat',
+    iconClass: 'cli',
+    icon: '🤝',
+    practices: [
+      'Git 原生集成——每次修改自动 commit，方便回滚',
+      '/add 添加文件到上下文，/map 查看代码库结构',
+      '支持多模型切换：Claude、GPT-4o、DeepSeek 等',
+      '纯 CLI 工作流——适合终端党，不依赖任何 IDE'
+    ],
+    advancedTips: [
+      '开源免费，只需 API Key',
+      'aider --model claude-3.5-sonnet 指定模型',
+      '--auto-comm 自动提交，--no-auto-comm 手动确认'
+    ],
+    sourceTitle: 'Aider 官方文档',
+    sourceUrl: 'https://aider.chat/docs/'
+  },
+  'Devin': {
+    url: 'https://devin.ai',
+    iconClass: 'cli',
+    icon: '🤖',
+    practices: [
+      '端到端自主开发：从理解需求到提交 PR 全流程自动化',
+      '给 Devin 明确的 Acceptance Criteria，避免模糊指令',
+      '复杂任务拆分为子任务分批交给 Devin 执行',
+      '每次执行后人工 Review 代码变更——自动化 ≠ 免审查'
+    ],
+    advancedTips: [
+      'Enterprise 定价，适合有预算的团队',
+      '擅长处理结构明确的 Issue，模糊需求仍需人工介入',
+      '与 Slack 集成，可异步跟踪执行进度'
+    ],
+    sourceTitle: 'Devin 官方站点',
+    sourceUrl: 'https://devin.ai'
+  },
+  'OpenHands': {
+    url: 'https://github.com/All-Hands-AI/OpenHands',
+    iconClass: 'cli',
+    icon: '🙌',
+    practices: [
+      '开源可自部署——数据不出内网，企业安全友好',
+      'SWE-bench 验证表现领先——适合处理真实 GitHub Issue',
+      'Docker 沙箱环境执行代码，隔离安全风险',
+      '支持多种底层模型：Claude、GPT-4o、本地模型等'
+    ],
+    advancedTips: [
+      '完全免费开源，社区活跃迭代快',
+      '自部署需要 GPU 资源（本地模型）或 API Key（云端模型）',
+      '适合对数据隐私有要求的团队'
+    ],
+    sourceTitle: 'OpenHands GitHub',
+    sourceUrl: 'https://github.com/All-Hands-AI/OpenHands'
+  },
+  'SWE-Agent': {
+    url: 'https://github.com/princeton-nlp/SWE-agent',
+    iconClass: 'cli',
+    icon: '🎓',
+    practices: [
+      '学术级 Issue 解决——Princeton NLP 出品，SWE-bench 基准测试利器',
+      '适合做模型能力评估和基准测试场景',
+      '配置 Agent-Computer Interface (ACI) 优化交互效率',
+      '需要一定的配置经验，不如商业工具开箱即用'
+    ],
+    advancedTips: [
+      '免费开源，偏向研究用途',
+      '自定义 ACI 可显著提升解决率',
+      '适合研究团队做 Agent 能力评测'
+    ],
+    sourceTitle: 'SWE-Agent GitHub',
+    sourceUrl: 'https://github.com/princeton-nlp/SWE-agent'
+  },
+  'Playwright + AI': {
+    url: 'https://playwright.dev',
+    iconClass: 'ide',
+    icon: '🎭',
+    practices: [
+      '用 AI 生成 E2E 测试用例——"描述用户登录流程"即可生成完整测试',
+      'AI 辅助维护测试：页面结构变化后让 AI 自动修复选择器',
+      'Codegen 录制 + AI 优化：先录制再让 AI 补充断言和边界场景',
+      '配合 CI/CD 在每次提交后自动运行，及时捕获回归'
+    ],
+    advancedTips: [
+      'Playwright MCP 可让 AI Agent 直接操控浏览器',
+      'Trace Viewer + AI 分析失败用例根因',
+      '免费开源，Vite 生态友好'
+    ],
+    sourceTitle: 'Playwright 官方文档',
+    sourceUrl: 'https://playwright.dev'
+  },
+  'Vitest': {
+    url: 'https://vitest.dev',
+    iconClass: 'ide',
+    icon: '⚡',
+    practices: [
+      'Vite 生态原生支持——配置零成本，速度极快',
+      '用 AI 批量生成单元测试："为 utils/*.ts 生成测试覆盖"',
+      'TDD + AI：先写测试定义行为 → 让 AI 生成实现 → 测试通过即完成',
+      'watch 模式下边写边测，AI 修改代码后立即看到测试结果'
+    ],
+    advancedTips: [
+      '免费开源，与 Vite 项目零配置集成',
+      '支持组件测试（配合 vue-test-utils / testing-library）',
+      'coverage 报告配合 AI 分析未覆盖的边界场景'
+    ],
+    sourceTitle: 'Vitest 官方文档',
+    sourceUrl: 'https://vitest.dev'
+  }
+};
+
+function renderToolchain() {
+  const c = document.getElementById('toolchain-container');
+  let html = '';
+  WORKFLOW_DATA.toolchain.categories.forEach((cat) => {
+    html += `<h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 12px;color:#2C2C2C;">${cat.name}</h3>`;
+    html += '<div class="tool-cards">';
+    cat.items.forEach(item => {
+      const bp = TOOL_BEST_PRACTICES[item.name];
+      const iconClass = bp ? bp.iconClass : 'ide';
+      const icon = bp ? bp.icon : '🔧';
+      html += `
+        <div class="tool-card" onclick="toggleTool(this)">
+          <div class="tool-card-header">
+            <div class="tool-card-icon ${iconClass}">${icon}</div>
+            <div class="tool-card-info">
+              <div class="tool-card-name">${item.name}</div>
+              <div class="tool-card-sub">${item.type} · ${item.pricing}</div>
+            </div>
+            <div class="tool-card-stars">${item.recommendation}</div>
+            <div class="tool-card-toggle">▾</div>
+          </div>
+          <div class="tool-card-detail" onclick="event.stopPropagation()">
+            ${bp ? `
+              <span class="best-practice-tag">💡 最佳实践</span>
+              <ul>${bp.practices.map(p=>`<li>${p}</li>`).join('')}</ul>
+              <h4>进阶技巧</h4>
+              <ul>${bp.advancedTips.map(p=>`<li>${p}</li>`).join('')}</ul>
+              <h4>了解更多</h4>
+              <a class="tool-link" href="${bp.sourceUrl}" target="_blank" rel="noopener">${bp.sourceTitle} ↗</a>
+              <span style="margin:0 8px;color:#ccc;">|</span>
+              <a class="tool-link" href="${bp.url}" target="_blank" rel="noopener">官方站点 ↗</a>
+            ` : `
+              <p style="font-size:0.9rem;color:#666;font-weight:500;">${item.strength}</p>
+            `}
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+  c.innerHTML = html;
+}
+
+function toggleTool(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.tool-card.expanded').forEach(c => {
+    if (c !== card) c.classList.remove('expanded');
+  });
+  card.classList.toggle('expanded', !wasExpanded);
+}
+
+// ========== Feed ==========
+let activeFilter = 'all';
+function renderFeed(filter='all', search='') {
+  let items = WORKFLOW_DATA.feed;
+  if (filter!=='all') items = items.filter(f => (f.tags||[]).some(t => t.includes(filter)));
+  if (search) {
+    const s = search.toLowerCase();
+    items = items.filter(f =>
+      (f.title||'').toLowerCase().includes(s) ||
+      (f.summary||'').toLowerCase().includes(s)
+    );
+  }
+  const c = document.getElementById('feed-container');
+  c.innerHTML = items.length ? items.map(f => `
+    <a class="feed-item" href="${f.url||'#'}" target="_blank" rel="noopener">
+      <div class="feed-meta">
+        <span class="feed-platform pf-${f.platform.toLowerCase().replace('/','')}">${f.platform}</span>
+        <span class="feed-author">${f.author||''}</span>
+        <span class="feed-date">${f.date||''}</span>
+      </div>
+      <h3>${f.title||''}<span class="external-arrow">↗</span></h3>
+      <div class="summary">${f.summary||''}</div>
+      <div class="feed-tags">${(f.tags||[]).map(t=>`<span class="feed-tag">${t}</span>`).join('')}</div>
+    </a>
+  `).join('') : '<p style="color:#999;padding:20px;text-align:center;font-weight:700;">没有匹配的结果</p>';
+}
+function renderFeedFilters() {
+  const filters = ['all','🔧工具','📋方法论','💡案例','⚡新闻'];
+  document.getElementById('feed-filters').innerHTML = filters.map(f => `
+    <button class="filter-btn ${f==='all'?'active':''}" onclick="setFilter('${f}',this)">${f==='all'?'全部':f}</button>
+  `).join('');
+}
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFeed(f, document.getElementById('feed-search').value);
+}
+document.getElementById('feed-search').addEventListener('input', function(){
+  renderFeed(activeFilter, this.value);
+});
+
+// Badge
+document.getElementById('feed-count').textContent = (WORKFLOW_DATA.feed||[]).length;
+
+// Nav scroll
+document.querySelectorAll('.topbar-link').forEach(a => {
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    const t = document.querySelector(this.getAttribute('href'));
+    if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.topbar-link').forEach(l=>l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Init
+renderPipeline();
+renderParadigms();
+renderToolchain();
+renderFeedFilters();
+renderFeed();
+
+setTimeout(()=>{
+  const first = document.querySelector('.stage-card');
+  if(first) first.classList.add('expanded');
+}, 600);
+</script>
+</body>
+</html>

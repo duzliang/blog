@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local — 项目定制工作流</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+
+  :root {
+    --ink: #2C2C2C;
+    --border: #2C2C2C;
+    --border-w: 3px;
+    --shadow-x: 4px;
+    --shadow-y: 4px;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --bg-base: #FFF9F0;
+    --bg-card: #FFFFFF;
+    --bg-pink: #FFF0F6;
+    --bg-green: #F0FFF4;
+    --bg-blue: #F0F8FF;
+    --bg-yellow: #FFFAF0;
+    --bg-lavender: #F0F0FF;
+    --green: #52C41A;
+    --green-dark: #237804;
+    --yellow: #FFD93D;
+    --red: #FA5252;
+    --blue: #4DABF7;
+    --font: 'Baloo 2', 'Noto Sans SC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background: var(--bg-base);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ========== Topbar ========== */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-base);
+    border-bottom: var(--border-w) solid var(--border);
+    box-shadow: 0 3px 0 var(--border);
+    padding: 0 24px;
+  }
+  .topbar-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .topbar-brand {
+    font-size: 1.3rem; font-weight: 800; color: var(--ink);
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+  }
+  .topbar-brand .logo {
+    width: 40px; height: 40px;
+    background: var(--green); border: var(--border-w) solid var(--border);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800; color: white;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .topbar-links { display: flex; gap: 6px; flex-wrap: wrap; }
+  .topbar-link {
+    padding: 8px 14px; border-radius: var(--radius-sm);
+    font-weight: 600; font-size: 0.85rem; color: var(--ink);
+    text-decoration: none; transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .topbar-link:hover, .topbar-link.active {
+    background: var(--ink); color: white;
+  }
+
+  /* ========== Banner ========== */
+  .banner {
+    max-width: 1200px; margin: 24px auto 0;
+    padding: 0 24px;
+  }
+  .banner-inner {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-lavender);
+    padding: 16px 24px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  .banner .icon { font-size: 1.5rem; }
+  .banner p { font-size: 0.9rem; color: #555; font-weight: 500; }
+  .banner a { color: var(--blue); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--blue); }
+
+  /* ========== Section ========== */
+  .section { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+  .section-head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px; padding-bottom: 12px;
+    border-bottom: var(--border-w) solid var(--border);
+  }
+  .section-head h2 { font-size: 1.5rem; font-weight: 800; color: var(--ink); }
+  .section-head .tag {
+    background: var(--yellow); padding: 2px 12px;
+    border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+    border: 2px solid var(--border);
+  }
+
+  /* ========== Focus Chips ========== */
+  .focus-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .focus-chip {
+    padding: 10px 20px; border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border);
+    background: var(--bg-green);
+    font-weight: 700; font-size: 0.95rem;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+
+  /* ========== Convention Cards ========== */
+  .conv-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .conv-card {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    padding: 20px; transition: all 0.2s;
+  }
+  .conv-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .conv-card .cat {
+    display: inline-block; padding: 3px 12px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 800;
+    border: 2px solid var(--border); background: var(--bg-green);
+    color: var(--green-dark); margin-bottom: 8px;
+  }
+  .conv-card .rule { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; }
+
+  /* ========== Override Items ========== */
+  .override-item {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    padding: 20px 24px; margin-bottom: 14px;
+    transition: all 0.2s;
+  }
+  .override-item:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .override-item h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; }
+  .diff-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 800;
+    border: 2px solid var(--border);
+  }
+  .diff-add { background: var(--bg-green); color: var(--green-dark); }
+  .diff-base { background: var(--bg-blue); color: var(--blue); }
+  .override-chip {
+    display: inline-block; padding: 4px 12px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 700;
+    border: 2px solid var(--border); background: var(--bg-green);
+    margin: 3px 4px 3px 0;
+  }
+  .override-tip { font-size: 0.95rem; color: #444; font-weight: 600; padding: 3px 0; }
+  .override-tip::before { content: '💡 '; }
+
+  /* ========== Webbridge Section ========== */
+  .wb-flow {
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .wb-step {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    overflow: hidden; transition: all 0.2s;
+  }
+  .wb-step:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .wb-step-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 24px; cursor: pointer;
+  }
+  .wb-step-num {
+    flex-shrink: 0; width: 40px; height: 40px;
+    border-radius: 50%; border: var(--border-w) solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 800;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .wb-step-num.n1 { background: var(--bg-green); color: var(--green-dark); }
+  .wb-step-num.n2 { background: var(--bg-blue); color: var(--blue); }
+  .wb-step-num.n3 { background: var(--bg-yellow); color: var(--ink); }
+  .wb-step-num.n4 { background: var(--bg-pink); color: #C41D7F; }
+  .wb-step-info { flex: 1; }
+  .wb-step-title { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+  .wb-step-sub { font-size: 0.82rem; color: #888; font-weight: 600; }
+  .wb-step-toggle {
+    flex-shrink: 0; width: 32px; height: 32px;
+    border-radius: 50%; border: var(--border-w) solid var(--border);
+    background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: 800;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  }
+  .wb-step.expanded .wb-step-toggle {
+    transform: rotate(180deg);
+    background: var(--yellow);
+  }
+  .wb-step-body {
+    overflow: hidden;
+    max-height: 0; opacity: 0;
+    border-top: var(--border-w) dashed transparent;
+    padding: 0 24px;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                padding 0.4s ease,
+                border-top-color 0.3s ease;
+  }
+  .wb-step.expanded .wb-step-body {
+    max-height: 1200px; opacity: 1;
+    padding: 20px 24px;
+    border-top-color: var(--border);
+  }
+  .wb-step-body p { font-size: 1rem; color: #444; font-weight: 600; margin-bottom: 12px; line-height: 1.6; }
+  .wb-step-body h4 {
+    font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #888; margin: 14px 0 6px;
+  }
+  .wb-step-body ul { list-style: none; }
+  .wb-step-body li { font-size: 0.95rem; font-weight: 600; color: #333; padding: 4px 0; }
+  .wb-step-body li::before { content: '✦  '; }
+  .wb-code {
+    background: var(--bg-base); border: 2px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 18px;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.82rem; font-weight: 500; color: var(--ink);
+    overflow-x: auto; white-space: pre; margin: 10px 0;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .wb-output {
+    background: var(--bg-green); border: 2px solid var(--border);
+    border-radius: var(--radius-sm); padding: 12px 16px;
+    font-size: 0.85rem; font-weight: 500; color: #333;
+    margin: 10px 0; box-shadow: 2px 2px 0 var(--border);
+  }
+  .wb-output::before { content: '📋 输出示例：'; font-weight: 800; display: block; margin-bottom: 6px; }
+
+  /* ========== Local Tool Cards ========== */
+  .local-tool-cards { display: flex; flex-direction: column; gap: 12px; }
+  .local-tool-card {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    padding: 18px 22px;
+    display: flex; align-items: center; gap: 16px;
+    transition: all 0.2s;
+  }
+  .local-tool-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .local-tool-icon {
+    flex-shrink: 0; width: 44px; height: 44px;
+    border-radius: var(--radius-sm); border: var(--border-w) solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .local-tool-icon.t1 { background: var(--bg-blue); }
+  .local-tool-icon.t2 { background: var(--bg-green); }
+  .local-tool-icon.t3 { background: var(--bg-yellow); }
+  .local-tool-name { font-size: 1rem; font-weight: 800; color: var(--ink); }
+  .local-tool-type { font-size: 0.8rem; color: #888; font-weight: 600; }
+  .local-tool-strength { font-size: 1rem; color: #444; font-weight: 600; flex: 1; }
+
+  /* ========== Core Points ========== */
+  .core-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .core-card {
+    border: var(--border-w) solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); box-shadow: 3px 3px 0 var(--border);
+    padding: 22px; transition: all 0.2s;
+  }
+  .core-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .core-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .core-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border); display: flex;
+    align-items: center; justify-content: center; font-size: 1.4rem;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .core-icon.c1 { background: var(--bg-pink); }
+  .core-icon.c2 { background: var(--bg-blue); }
+  .core-icon.c3 { background: var(--bg-green); }
+  .core-title-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .core-title { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+  .core-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .core-tag {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;
+    border: 2px solid var(--border); background: var(--bg-base); color: #666;
+  }
+  .core-desc { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; margin-bottom: 10px; }
+  .core-details { list-style: none; }
+  .core-details li { font-size: 0.95rem; color: #555; font-weight: 600; padding: 3px 0; }
+  .core-details li::before { content: '→ '; color: var(--green); font-weight: 700; }
+
+  /* ========== Workflow Steps ========== */
+  .workflow-steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .workflow-steps::before {
+    content: ''; position: absolute; left: 28px; top: 24px; bottom: 24px;
+    width: 3px; background: var(--border); border-radius: 2px;
+  }
+  .wf-step {
+    display: flex; gap: 16px; padding: 12px 0; position: relative; z-index: 1;
+  }
+  .wf-step-num {
+    flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%;
+    border: var(--border-w) solid var(--border); background: var(--bg-card);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: 800; box-shadow: 2px 2px 0 var(--border);
+  }
+  .wf-step-content {
+    flex: 1; border: var(--border-w) solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); box-shadow: 3px 3px 0 var(--border);
+    padding: 18px 22px; transition: all 0.2s;
+  }
+  .wf-step-content:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .wf-step-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .wf-step-title { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+  .wf-step-phase {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;
+    border: 2px solid var(--border); background: var(--bg-yellow);
+  }
+  .wf-step-desc { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; margin-bottom: 10px; }
+  .wf-step-tips { list-style: none; }
+  .wf-step-tips li { font-size: 0.95rem; color: #555; font-weight: 600; padding: 3px 0; }
+  .wf-step-tips li::before { content: '→ '; color: var(--green); font-weight: 700; }
+
+  /* ========== Skill Cards ========== */
+  .skill-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+  .skill-card {
+    border: var(--border-w) solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); box-shadow: 3px 3px 0 var(--border);
+    padding: 22px; transition: all 0.2s; cursor: pointer;
+  }
+  .skill-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .skill-card.expanded { cursor: default; }
+  .skill-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px; padding: 6px 14px;
+    border: 2px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg-base); font-size: 0.85rem; font-weight: 700;
+    color: var(--ink); cursor: pointer; transition: all 0.2s;
+  }
+  .skill-toggle:hover { background: var(--yellow); }
+
+  /* ========== Skill Modal ========== */
+  .skill-modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .skill-modal-overlay.open {
+    opacity: 1; pointer-events: auto;
+  }
+  .skill-modal {
+    width: 90vw; max-width: 960px; max-height: 85vh;
+    background: var(--bg-card); border: var(--border-w) solid var(--border);
+    border-radius: var(--radius); box-shadow: 8px 8px 0 var(--border);
+    display: flex; flex-direction: column;
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .skill-modal-overlay.open .skill-modal {
+    transform: translateY(0) scale(1);
+  }
+  .skill-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: var(--border-w) solid var(--border);
+    flex-shrink: 0;
+  }
+  .skill-modal-header h3 {
+    font-size: 1.2rem; font-weight: 800; color: var(--ink);
+    display: flex; align-items: center; gap: 10px; margin: 0;
+  }
+  .skill-modal-close {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: var(--border-w) solid var(--border); background: var(--bg-base);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; font-weight: 800; cursor: pointer;
+    transition: all 0.2s; box-shadow: 2px 2px 0 var(--border);
+  }
+  .skill-modal-close:hover { background: var(--red); color: white; }
+  .skill-modal-body {
+    flex: 1; overflow-y: auto; padding: 20px 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .skill-md {
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.85rem; font-weight: 500; line-height: 1.7;
+    color: var(--ink); white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .skill-md h1, .skill-md h2, .skill-md h3 { font-family: var(--font); margin: 14px 0 8px; }
+  .skill-md h1 { font-size: 1.15rem; font-weight: 800; border-bottom: 2px solid var(--border); padding-bottom: 6px; }
+  .skill-md h2 { font-size: 1.05rem; font-weight: 700; }
+  .skill-md h3 { font-size: 0.95rem; font-weight: 700; }
+  .skill-md code {
+    background: #f0f0f0; padding: 2px 5px; border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  .skill-md pre {
+    background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px;
+    padding: 14px; overflow-x: auto; margin: 10px 0;
+  }
+  .skill-md pre code { background: none; padding: 0; }
+  .skill-md ul, .skill-md ol { margin: 8px 0; padding-left: 24px; }
+  .skill-md li { margin: 4px 0; }
+  .skill-md strong { font-weight: 700; color: #000; }
+  .skill-loading { font-size: 0.95rem; color: #888; font-weight: 600; padding: 20px 0; text-align: center; }
+  .skill-loading::before { content: '⏳ '; }
+  .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .skill-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    border: var(--border-w) solid var(--border); display: flex;
+    align-items: center; justify-content: center; font-size: 1.4rem;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .skill-icon.s1 { background: var(--bg-blue); }
+  .skill-icon.s2 { background: var(--bg-green); }
+  .skill-name { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+  .skill-id {
+    font-family: 'Fira Code', monospace; font-size: 0.78rem; color: #888;
+    background: var(--bg-base); padding: 2px 8px; border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+  .skill-status {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;
+    border: 2px solid var(--border);
+  }
+  .skill-status.active { background: var(--bg-green); color: var(--green-dark); }
+  .skill-domain { font-size: 0.85rem; color: #888; font-weight: 600; margin-bottom: 8px; }
+  .skill-desc { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; margin-bottom: 10px; }
+  .skill-tips { list-style: none; }
+  .skill-tips li { font-size: 0.95rem; color: #555; font-weight: 600; padding: 3px 0; }
+  .skill-tips li::before { content: '• '; color: var(--blue); font-weight: 700; }
+
+  /* ========== Case Cards ========== */
+  .case-list { display: flex; flex-direction: column; gap: 14px; }
+  .case-card {
+    border: var(--border-w) solid var(--border); border-radius: var(--radius);
+    background: var(--bg-card); box-shadow: 3px 3px 0 var(--border);
+    padding: 22px; transition: all 0.2s;
+  }
+  .case-card:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .case-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .case-icon { font-size: 1.6rem; }
+  .case-title { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+  .case-category {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;
+    border: 2px solid var(--border); background: var(--bg-lavender); color: #555;
+  }
+  .case-link {
+    font-size: 1rem; text-decoration: none; margin-left: 4px;
+    transition: transform 0.2s; display: inline-block;
+  }
+  .case-link:hover { transform: scale(1.2); }
+
+  /* ========== Hide Unused Sections ========== */
+  #overrides,
+  #conventions,
+  #local-tools,
+  #local-feed { display: none !important; }
+  .topbar-link[href="#overrides"],
+  .topbar-link[href="#conventions"],
+  .topbar-link[href="#local-tools"],
+  .topbar-link[href="#local-feed"] { display: none !important; }
+
+  .case-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .case-tag {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700;
+    border: 2px solid var(--border); background: var(--bg-base); color: #666;
+  }
+  .case-section { margin-bottom: 10px; }
+  .case-section h4 {
+    font-size: 0.78rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #888; margin-bottom: 4px;
+  }
+  .case-section p { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; }
+
+  /* ========== Local Feed ========== */
+  .feed-item {
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    box-shadow: 3px 3px 0 var(--border);
+    padding: 18px 22px; margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+  .feed-item:hover {
+    box-shadow: 5px 5px 0 var(--border);
+    transform: translate(-1px, -1px);
+  }
+  .feed-item h3 { font-size: 1rem; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+  .feed-item .date { font-size: 0.78rem; color: #999; font-weight: 600; margin-bottom: 8px; }
+  .feed-item .summary { font-size: 1rem; color: #444; font-weight: 600; line-height: 1.6; }
+
+  /* ========== Footer ========== */
+  .footer {
+    border-top: var(--border-w) solid var(--border);
+    box-shadow: 0 -3px 0 var(--border);
+    padding: 24px; text-align: center;
+    font-size: 0.85rem; color: #999; font-weight: 600;
+  }
+
+  /* ========== Scroll offset for sticky topbar ========== */
+  .section, [id] {
+    scroll-margin-top: 80px;
+  }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 800px) {
+    .conv-grid { grid-template-columns: 1fr; }
+    .section { padding: 24px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="../index.html" class="topbar-brand">
+      <span class="logo">🎯</span>
+      Local 工作流
+    </a>
+    <div class="topbar-links">
+      <a href="#focus" class="topbar-link active">重点范式</a>
+      <a href="#core" class="topbar-link">核心要点</a>
+      <a href="#workflow" class="topbar-link">实践工作流</a>
+      <a href="#skills" class="topbar-link">领域 Skills</a>
+      <a href="#cases" class="topbar-link">实践案例</a>
+      <a href="#webbridge" class="topbar-link">WebBridge</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Banner -->
+<div class="banner">
+  <div class="banner-inner">
+    <span class="icon">🔗</span>
+    <p>本页基于 <a href="../global/index.html">Global 工作流</a> 定制，继承全局最佳实践并叠加项目特定配置</p>
+  </div>
+</div>
+
+<!-- Focus Paradigms -->
+<div class="section" id="focus">
+  <div class="section-head">
+    <h2>🎯 重点范式</h2>
+    <span class="tag">Focus</span>
+  </div>
+  <div class="focus-chips" id="focus-container"></div>
+</div>
+
+<!-- Core Points -->
+<div class="section" id="core">
+  <div class="section-head">
+    <h2>🎯 核心要点</h2>
+    <span class="tag">Essentials</span>
+  </div>
+  <p style="font-size:0.95rem;color:#555;font-weight:500;margin-bottom:24px;max-width:800px;">
+    复杂任务分步提交，每步聚焦单一目标
+  </p>
+  <div class="core-grid" id="core-container"></div>
+</div>
+
+<!-- Standard Workflow -->
+<div class="section" id="workflow">
+  <div class="section-head">
+    <h2>🔄 实践工作流</h2>
+    <span class="tag">Workflow</span>
+  </div>
+  <p style="font-size:0.95rem;color:#555;font-weight:500;margin-bottom:24px;max-width:800px;">
+    日常 AI 开发的标准作业程序（SOP），从设计到交付的完整链路。每条工作流都包含执行阶段、核心要点和实战技巧。
+  </p>
+  <div class="workflow-steps" id="workflow-container"></div>
+</div>
+
+<!-- Domain Skills -->
+<div class="section" id="skills">
+  <div class="section-head">
+    <h2>🛠️ 领域专属 Skills</h2>
+    <span class="tag">Skills</span>
+  </div>
+  <p style="font-size:0.95rem;color:#555;font-weight:500;margin-bottom:24px;max-width:800px;">
+    基于特定项目经验构建的专属 Skill，通过迁移案例提炼规则，提升 AI 在特定领域的任务执行精度。
+  </p>
+  <div class="skill-grid" id="skills-container"></div>
+</div>
+
+<!-- Skill Modal -->
+<div class="skill-modal-overlay" id="skill-modal-overlay">
+  <div class="skill-modal">
+    <div class="skill-modal-header">
+      <h3 id="skill-modal-title">Skill 详情</h3>
+      <div class="skill-modal-close" onclick="closeSkillModal()">×</div>
+    </div>
+    <div class="skill-modal-body" id="skill-modal-body"></div>
+  </div>
+</div>
+
+<!-- Use Cases -->
+<div class="section" id="cases">
+  <div class="section-head">
+    <h2>💡 实践案例</h2>
+    <span class="tag">Cases</span>
+  </div>
+  <p style="font-size:0.95rem;color:#555;font-weight:500;margin-bottom:24px;max-width:800px;">
+    其他场景下的 AI 应用实践案例，涵盖组件库集成、AI 主导迁移、自动化验证和工具探索。
+  </p>
+  <div class="case-list" id="cases-container"></div>
+</div>
+
+<!-- Conventions -->
+<div class="section" id="conventions">
+  <div class="section-head">
+    <h2>📋 团队约定</h2>
+    <span class="tag">Rules</span>
+  </div>
+  <div class="conv-grid" id="conv-container"></div>
+</div>
+
+<!-- kimi-webbridge -->
+<div class="section" id="webbridge">
+  <div class="section-head">
+    <h2>🌉 kimi-webbridge 工程化实践</h2>
+    <span class="tag">Engineering</span>
+  </div>
+  <p style="font-size:0.95rem;color:#555;font-weight:500;margin-bottom:24px;max-width:800px;">
+    通过 kimi-webbridge 自动读取原型网站和接口文档网站，实现"原型 → 接口 → 代码"的闭环开发流程。AI Agent 可直接复用已登录的浏览器 Session，无需手动登录。
+  </p>
+  <div class="wb-flow" id="wb-container"></div>
+</div>
+
+<!-- Overrides -->
+<div class="section" id="overrides">
+  <div class="section-head">
+    <h2>🔧 定制覆盖</h2>
+    <span class="tag">Overrides</span>
+  </div>
+  <div id="overrides-container"></div>
+</div>
+
+<!-- Local Tools -->
+<div class="section" id="local-tools">
+  <div class="section-head">
+    <h2>🏠 项目内部工具</h2>
+    <span class="tag">Internal</span>
+  </div>
+  <div class="local-tool-cards" id="local-tools-container"></div>
+</div>
+
+<!-- Local Feed -->
+<div class="section" id="local-feed">
+  <div class="section-head">
+    <h2>📊 项目动态</h2>
+    <span class="tag">Updates</span>
+  </div>
+  <div id="local-feed-container"></div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Local 工作流 · 基于Global版定制 · 最后更新 2026-06-05</p>
+</div>
+
+<script src="../global/data.js"></script>
+<script src="customizations.js"></script>
+<script>
+// ========== Focus Paradigms ==========
+(function() {
+  var el = document.getElementById('focus-container');
+  var focused = WORKFLOW_DATA.paradigms.filter(function(p) {
+    return LOCAL_CUSTOMIZATIONS.paradigmFocus.indexOf(p.id) >= 0;
+  });
+  el.innerHTML = focused.map(function(p) {
+    return '<div class="focus-chip">' + p.emoji + ' ' + p.name + ' — ' + p.tagline + '</div>';
+  }).join('');
+})();
+
+// ========== Core Points ==========
+(function() {
+  var el = document.getElementById('core-container');
+  var points = LOCAL_CUSTOMIZATIONS.corePoints || [];
+  var iconClasses = ['c1', 'c2', 'c3'];
+  el.innerHTML = points.map(function(p, i) {
+    return '<div class="core-card">' +
+      '<div class="core-header">' +
+        '<div class="core-icon ' + iconClasses[i % 3] + '">' + p.emoji + '</div>' +
+        '<div class="core-title-wrap">' +
+          '<div class="core-title">' + p.title + '</div>' +
+          (p.tags && p.tags.length ? '<div class="core-tags">' +
+            p.tags.map(function(t) { return '<span class="core-tag">' + t + '</span>'; }).join('') +
+          '</div>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="core-desc">' + p.description + '</div>' +
+      '<ul class="core-details">' +
+        p.details.map(function(d) { return '<li>' + d + '</li>'; }).join('') +
+      '</ul>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== Standard Workflow ==========
+(function() {
+  var el = document.getElementById('workflow-container');
+  var steps = LOCAL_CUSTOMIZATIONS.standardWorkflow || [];
+  el.innerHTML = steps.map(function(s, i) {
+    return '<div class="wf-step">' +
+      '<div class="wf-step-num">' + s.emoji + '</div>' +
+      '<div class="wf-step-content">' +
+        '<div class="wf-step-header">' +
+          '<div class="wf-step-title">' + s.title + '</div>' +
+          '<div class="wf-step-phase">' + s.phase + '</div>' +
+        '</div>' +
+        '<div class="wf-step-desc">' + s.description + '</div>' +
+        '<ul class="wf-step-tips">' +
+          s.tips.map(function(t) { return '<li>' + t + '</li>'; }).join('') +
+        '</ul>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== Domain Skills ==========
+(function() {
+  var el = document.getElementById('skills-container');
+  var skills = LOCAL_CUSTOMIZATIONS.domainSkills || [];
+  var iconClasses = ['s1', 's2'];
+  var skillContents = {};
+
+  el.innerHTML = skills.map(function(s, i) {
+    return '<div class="skill-card" data-skill-id="' + s.skillId + '" onclick="openSkillModal(this)">' +
+      '<div class="skill-header">' +
+        '<div class="skill-icon ' + iconClasses[i % 2] + '">' + s.emoji + '</div>' +
+        '<div style="flex:1;">' +
+          '<div class="skill-name">' + s.name + '</div>' +
+          '<div style="display:flex;gap:8px;align-items:center;margin-top:4px;">' +
+            '<span class="skill-id">' + s.skillId + '</span>' +
+            '<span class="skill-status ' + s.status + '">' + s.status + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="skill-domain">' + s.domain + '</div>' +
+      '<div class="skill-desc">' + s.description + '</div>' +
+      '<ul class="skill-tips">' +
+        s.tips.map(function(t) { return '<li>' + t + '</li>'; }).join('') +
+      '</ul>' +
+      '<div class="skill-toggle" onclick="event.stopPropagation();openSkillModal(this.parentNode)">' +
+        '<span>查看完整规范 →</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  var modalOverlay = document.getElementById('skill-modal-overlay');
+  var modalTitle = document.getElementById('skill-modal-title');
+  var modalBody = document.getElementById('skill-modal-body');
+
+  window.openSkillModal = function(card) {
+    var skillId = card.getAttribute('data-skill-id');
+    var skill = skills.find(function(s) { return s.skillId === skillId; });
+    if (!skill) return;
+
+    modalTitle.innerHTML = skill.emoji + ' ' + skill.name;
+    modalBody.innerHTML = '<div class="skill-loading">加载中...</div>';
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    if (skillContents[skillId]) {
+      modalBody.innerHTML = '<div class="skill-md">' + renderMarkdown(skillContents[skillId]) + '</div>';
+    } else {
+      fetch('../skills/' + skillId + '/SKILL.md')
+        .then(function(r) { return r.text(); })
+        .then(function(text) {
+          skillContents[skillId] = text;
+          modalBody.innerHTML = '<div class="skill-md">' + renderMarkdown(text) + '</div>';
+        })
+        .catch(function(err) {
+          modalBody.innerHTML = '<div class="skill-loading">加载失败：' + err.message + '</div>';
+        });
+    }
+  };
+
+  window.closeSkillModal = function() {
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) closeSkillModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSkillModal();
+  });
+
+  function renderMarkdown(text) {
+    var lines = text.split('\n');
+    var html = '';
+    var inCode = false;
+    var codeLang = '';
+    var codeBuf = [];
+    var inList = false;
+    var listType = '';
+
+    function escapeHtmlEntities(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function inlineRender(str) {
+      return escapeHtmlEntities(str)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    function flushList() {
+      if (inList) {
+        html += (listType === 'ol' ? '</ol>' : '</ul>') + '\n';
+        inList = false;
+        listType = '';
+      }
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      // Code block
+      if (trimmed.startsWith('```')) {
+        if (!inCode) {
+          flushList();
+          inCode = true;
+          codeLang = trimmed.slice(3).trim();
+          codeBuf = [];
+        } else {
+          inCode = false;
+          html += '<pre><code' + (codeLang ? ' class="language-' + codeLang + '"' : '') + '>' +
+            escapeHtmlEntities(codeBuf.join('\n')) + '</code></pre>\n';
+          codeBuf = [];
+        }
+        continue;
+      }
+      if (inCode) {
+        codeBuf.push(line);
+        continue;
+      }
+
+      // Empty line
+      if (trimmed === '') {
+        flushList();
+        continue;
+      }
+
+      // Horizontal rule
+      if (/^(-{3,}|\*{3,})$/.test(trimmed)) {
+        flushList();
+        html += '<hr>\n';
+        continue;
+      }
+
+      // Headings
+      var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
+      if (hMatch) {
+        flushList();
+        var level = hMatch[1].length;
+        html += '<h' + level + '>' + inlineRender(hMatch[2]) + '</h' + level + '>\n';
+        continue;
+      }
+
+      // Unordered list
+      var ulMatch = line.match(/^(\s*)[-*]\s+(.*)$/);
+      if (ulMatch) {
+        if (!inList || listType !== 'ul') {
+          flushList();
+          html += '<ul>\n';
+          inList = true;
+          listType = 'ul';
+        }
+        html += '<li>' + inlineRender(ulMatch[2]) + '</li>\n';
+        continue;
+      }
+
+      // Ordered list
+      var olMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
+      if (olMatch) {
+        if (!inList || listType !== 'ol') {
+          flushList();
+          html += '<ol>\n';
+          inList = true;
+          listType = 'ol';
+        }
+        html += '<li>' + inlineRender(olMatch[2]) + '</li>\n';
+        continue;
+      }
+
+      // Blockquote
+      var bqMatch = line.match(/^\s*>\s?(.*)$/);
+      if (bqMatch) {
+        flushList();
+        html += '<blockquote>' + inlineRender(bqMatch[1]) + '</blockquote>\n';
+        continue;
+      }
+
+      // Regular paragraph
+      flushList();
+      html += '<p>' + inlineRender(line) + '</p>\n';
+    }
+
+    flushList();
+    if (inCode) {
+      html += '<pre><code' + (codeLang ? ' class="language-' + codeLang + '"' : '') + '>' +
+        escapeHtmlEntities(codeBuf.join('\n')) + '</code></pre>\n';
+    }
+    return html;
+  }
+})();
+
+// ========== Use Cases ==========
+(function() {
+  var el = document.getElementById('cases-container');
+  var cases = LOCAL_CUSTOMIZATIONS.useCases || [];
+  el.innerHTML = cases.map(function(c) {
+    return '<div class="case-card">' +
+      '<div class="case-header">' +
+        '<span class="case-icon">' + c.emoji + '</span>' +
+        '<div class="case-title">' + c.title + '</div>' +
+        '<div class="case-category">' + c.category + '</div>' +
+        (c.categoryLink ? '<a href="' + c.categoryLink + '" target="_blank" rel="noopener" class="case-link" onclick="event.stopPropagation()">🔗</a>' : '') +
+      '</div>' +
+      '<div class="case-tags">' +
+        c.tags.map(function(t) { return '<span class="case-tag">' + t + '</span>'; }).join('') +
+      '</div>' +
+      '<div class="case-section">' +
+        '<h4>场景</h4>' +
+        '<p>' + c.scenario + '</p>' +
+      '</div>' +
+      '<div class="case-section">' +
+        '<h4>方法</h4>' +
+        '<p>' + c.approach + '</p>' +
+      '</div>' +
+      '<div class="case-section">' +
+        '<h4>成果</h4>' +
+        '<p>' + c.outcome + '</p>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== Conventions ==========
+(function() {
+  var el = document.getElementById('conv-container');
+  el.innerHTML = LOCAL_CUSTOMIZATIONS.conventions.map(function(c) {
+    return '<div class="conv-card">' +
+      '<div class="cat">' + c.category + '</div>' +
+      '<div class="rule">' + c.rule + '</div>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== kimi-webbridge Steps ==========
+(function() {
+  var el = document.getElementById('wb-container');
+  var steps = LOCAL_CUSTOMIZATIONS.webbridgeSteps || [];
+  var numClasses = ['n1','n2','n3','n4'];
+  el.innerHTML = steps.map(function(s, i) {
+    return '<div class="wb-step" onclick="toggleWb(this)">' +
+      '<div class="wb-step-header">' +
+        '<div class="wb-step-num ' + numClasses[i % 4] + '">' + (i+1) + '</div>' +
+        '<div class="wb-step-info">' +
+          '<div class="wb-step-title">' + s.title + '</div>' +
+          '<div class="wb-step-sub">' + s.subtitle + '</div>' +
+        '</div>' +
+        '<div class="wb-step-toggle">▾</div>' +
+      '</div>' +
+      '<div class="wb-step-body" onclick="event.stopPropagation()">' +
+        '<p>' + s.description + '</p>' +
+        (s.commands ? '<h4>命令示例</h4><div class="wb-code">' + s.commands + '</div>' : '') +
+        (s.output ? '<div class="wb-output">' + s.output + '</div>' : '') +
+        (s.tips ? '<h4>注意事项</h4><ul>' + s.tips.map(function(t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+  // Auto-expand first step
+  var first = el.querySelector('.wb-step');
+  if (first) first.classList.add('expanded');
+})();
+
+function toggleWb(card) {
+  var wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.wb-step.expanded').forEach(function(c) {
+    if (c !== card) c.classList.remove('expanded');
+  });
+  card.classList.toggle('expanded', !wasExpanded);
+}
+
+// ========== Overrides ==========
+(function() {
+  var el = document.getElementById('overrides-container');
+  var overrides = LOCAL_CUSTOMIZATIONS.pipelineOverrides;
+  var stages = WORKFLOW_DATA.pipeline.stages;
+  var html = '';
+  Object.keys(overrides).forEach(function(stageId) {
+    var override = overrides[stageId];
+    var base = stages.find(function(s) { return s.id === stageId; });
+    if (!base) return;
+    html += '<div class="override-item">' +
+      '<h3>' + base.icon + ' ' + base.name +
+        ' <span class="diff-tag diff-base">Global基线</span>' +
+        ' <span class="diff-tag diff-add">Local覆盖</span>' +
+      '</h3>';
+    if (override.tools) {
+      html += '<div style="margin-bottom:12px;">' +
+        '<div style="font-size:0.8rem;color:#888;font-weight:700;margin-bottom:6px;">工具链覆盖</div>' +
+        '<div>' + override.tools.map(function(t) { return '<span class="override-chip">' + t + '</span>'; }).join('') + '</div>' +
+      '</div>';
+    }
+    if (override.tips) {
+      html += '<div>' +
+        '<div style="font-size:0.8rem;color:#888;font-weight:700;margin-bottom:6px;">项目实战Tips</div>' +
+        override.tips.map(function(t) { return '<div class="override-tip">' + t + '</div>'; }).join('') +
+      '</div>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html;
+})();
+
+// ========== Local Tools ==========
+(function() {
+  var el = document.getElementById('local-tools-container');
+  var iconClasses = ['t1','t2','t3'];
+  el.innerHTML = LOCAL_CUSTOMIZATIONS.localTools.map(function(t, i) {
+    return '<div class="local-tool-card">' +
+      '<div class="local-tool-icon ' + iconClasses[i % 3] + '">' + t.emoji + '</div>' +
+      '<div>' +
+        '<div class="local-tool-name">' + t.name + '</div>' +
+        '<div class="local-tool-type">' + t.type + '</div>' +
+      '</div>' +
+      '<div class="local-tool-strength">' + t.strength + '</div>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== Local Feed ==========
+(function() {
+  var el = document.getElementById('local-feed-container');
+  el.innerHTML = LOCAL_CUSTOMIZATIONS.localFeed.map(function(f) {
+    return '<div class="feed-item">' +
+      '<h3>' + f.title + '</h3>' +
+      '<div class="date">' + f.date + '</div>' +
+      '<div class="summary">' + f.summary + '</div>' +
+    '</div>';
+  }).join('');
+})();
+
+// ========== Nav scroll ==========
+document.querySelectorAll('.topbar-link').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var t = document.querySelector(this.getAttribute('href'));
+    if (t) t.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.topbar-link').forEach(function(l) { l.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

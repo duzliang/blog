@@ -1,0 +1,72 @@
+{
+  "sources": [
+    {
+      "name": "X/Twitter",
+      "type": "social",
+      "accounts": [
+        "@cursor_ai",
+        "@anthropicai",
+        "@kaborpathy",
+        "@swyx",
+        "@svpino",
+        "@seb_ruder",
+        "@_philschmid",
+        "@laike9m"
+      ],
+      "hashtags": ["#vibecoding", "#agenticdev", "#aicoding", "#cursorai", "#claudecode"],
+      "fetchMethod": "online-search",
+      "frequency": "daily"
+    },
+    {
+      "name": "Reddit",
+      "type": "forum",
+      "subreddits": [
+        "r/ExperiencedDevs",
+        "r/ChatGPTPro",
+        "r/LocalLLaMA",
+        "r/webdev",
+        "r/reactjs",
+        "r/nextjs"
+      ],
+      "fetchMethod": "web_fetch",
+      "frequency": "weekly"
+    },
+    {
+      "name": "Medium",
+      "type": "blog",
+      "publications": [
+        "towards-data-science",
+        "better-programming",
+        "the-startup"
+      ],
+      "tags": ["AI coding", "agentic development", "LLM tools"],
+      "fetchMethod": "online-search",
+      "frequency": "weekly"
+    },
+    {
+      "name": "HackerNews",
+      "type": "aggregator",
+      "keywords": ["AI coding", "LLM agent", "developer tools"],
+      "fetchMethod": "web_fetch",
+      "url": "https://news.ycombinator.com",
+      "frequency": "weekly"
+    },
+    {
+      "name": "ArXiv",
+      "type": "paper",
+      "categories": ["cs.SE", "cs.AI", "cs.CL"],
+      "keywords": ["software engineering AI", "code generation", "automated programming"],
+      "fetchMethod": "web_fetch",
+      "frequency": "weekly"
+    },
+    {
+      "name": "GitHub Trending",
+      "type": "code",
+      "topics": ["ai-coding", "llm-tools", "developer-tools", "code-agent"],
+      "fetchMethod": "web_fetch",
+      "frequency": "weekly"
+    }
+  ],
+  "lastFetch": null,
+  "nextFetch": "2026-06-05"
+}
