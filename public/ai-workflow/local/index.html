@@ -426,23 +426,9 @@
     font-size: 0.85rem; font-weight: 500; line-height: 1.7;
     color: var(--ink); white-space: pre-wrap;
     word-break: break-word;
+    background: #f5f5f5; border: 2px solid var(--border); border-radius: 8px;
+    padding: 20px; overflow-x: auto;
   }
-  .skill-md h1, .skill-md h2, .skill-md h3 { font-family: var(--font); margin: 14px 0 8px; }
-  .skill-md h1 { font-size: 1.15rem; font-weight: 800; border-bottom: 2px solid var(--border); padding-bottom: 6px; }
-  .skill-md h2 { font-size: 1.05rem; font-weight: 700; }
-  .skill-md h3 { font-size: 0.95rem; font-weight: 700; }
-  .skill-md code {
-    background: #f0f0f0; padding: 2px 5px; border-radius: 4px;
-    font-size: 0.8rem;
-  }
-  .skill-md pre {
-    background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px;
-    padding: 14px; overflow-x: auto; margin: 10px 0;
-  }
-  .skill-md pre code { background: none; padding: 0; }
-  .skill-md ul, .skill-md ol { margin: 8px 0; padding-left: 24px; }
-  .skill-md li { margin: 4px 0; }
-  .skill-md strong { font-weight: 700; color: #000; }
   .skill-loading { font-size: 0.95rem; color: #888; font-weight: 600; padding: 20px 0; text-align: center; }
   .skill-loading::before { content: '⏳ '; }
   .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -807,13 +793,13 @@
     document.body.style.overflow = 'hidden';
 
     if (skillContents[skillId]) {
-      modalBody.innerHTML = '<div class="skill-md">' + renderMarkdown(skillContents[skillId]) + '</div>';
+      modalBody.innerHTML = '<pre class="skill-md">' + escapeHtml(skillContents[skillId]) + '</pre>';
     } else {
       fetch('../skills/' + skillId + '/SKILL.md')
         .then(function(r) { return r.text(); })
         .then(function(text) {
           skillContents[skillId] = text;
-          modalBody.innerHTML = '<div class="skill-md">' + renderMarkdown(text) + '</div>';
+          modalBody.innerHTML = '<pre class="skill-md">' + escapeHtml(text) + '</pre>';
         })
         .catch(function(err) {
           modalBody.innerHTML = '<div class="skill-loading">加载失败：' + err.message + '</div>';
@@ -833,124 +819,11 @@
     if (e.key === 'Escape') closeSkillModal();
   });
 
-  function renderMarkdown(text) {
-    var lines = text.split('\n');
-    var html = '';
-    var inCode = false;
-    var codeLang = '';
-    var codeBuf = [];
-    var inList = false;
-    var listType = '';
-
-    function escapeHtmlEntities(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    function inlineRender(str) {
-      return escapeHtmlEntities(str)
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`([^`]+)`/g, '<code>$1</code>');
-    }
-
-    function flushList() {
-      if (inList) {
-        html += (listType === 'ol' ? '</ol>' : '</ul>') + '\n';
-        inList = false;
-        listType = '';
-      }
-    }
-
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      var trimmed = line.trim();
-
-      // Code block
-      if (trimmed.startsWith('```')) {
-        if (!inCode) {
-          flushList();
-          inCode = true;
-          codeLang = trimmed.slice(3).trim();
-          codeBuf = [];
-        } else {
-          inCode = false;
-          html += '<pre><code' + (codeLang ? ' class="language-' + codeLang + '"' : '') + '>' +
-            escapeHtmlEntities(codeBuf.join('\n')) + '</code></pre>\n';
-          codeBuf = [];
-        }
-        continue;
-      }
-      if (inCode) {
-        codeBuf.push(line);
-        continue;
-      }
-
-      // Empty line
-      if (trimmed === '') {
-        flushList();
-        continue;
-      }
-
-      // Horizontal rule
-      if (/^(-{3,}|\*{3,})$/.test(trimmed)) {
-        flushList();
-        html += '<hr>\n';
-        continue;
-      }
-
-      // Headings
-      var hMatch = line.match(/^(#{1,6})\s+(.*)$/);
-      if (hMatch) {
-        flushList();
-        var level = hMatch[1].length;
-        html += '<h' + level + '>' + inlineRender(hMatch[2]) + '</h' + level + '>\n';
-        continue;
-      }
-
-      // Unordered list
-      var ulMatch = line.match(/^(\s*)[-*]\s+(.*)$/);
-      if (ulMatch) {
-        if (!inList || listType !== 'ul') {
-          flushList();
-          html += '<ul>\n';
-          inList = true;
-          listType = 'ul';
-        }
-        html += '<li>' + inlineRender(ulMatch[2]) + '</li>\n';
-        continue;
-      }
-
-      // Ordered list
-      var olMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
-      if (olMatch) {
-        if (!inList || listType !== 'ol') {
-          flushList();
-          html += '<ol>\n';
-          inList = true;
-          listType = 'ol';
-        }
-        html += '<li>' + inlineRender(olMatch[2]) + '</li>\n';
-        continue;
-      }
-
-      // Blockquote
-      var bqMatch = line.match(/^\s*>\s?(.*)$/);
-      if (bqMatch) {
-        flushList();
-        html += '<blockquote>' + inlineRender(bqMatch[1]) + '</blockquote>\n';
-        continue;
-      }
-
-      // Regular paragraph
-      flushList();
-      html += '<p>' + inlineRender(line) + '</p>\n';
-    }
-
-    flushList();
-    if (inCode) {
-      html += '<pre><code' + (codeLang ? ' class="language-' + codeLang + '"' : '') + '>' +
-        escapeHtmlEntities(codeBuf.join('\n')) + '</code></pre>\n';
-    }
-    return html;
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 })();
 
