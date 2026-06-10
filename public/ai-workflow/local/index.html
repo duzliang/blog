@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Local — 项目定制工作流</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
 
@@ -422,13 +425,65 @@
     -webkit-overflow-scrolling: touch;
   }
   .skill-md {
-    font-family: 'Fira Code', 'JetBrains Mono', monospace;
-    font-size: 0.85rem; font-weight: 500; line-height: 1.7;
-    color: var(--ink); white-space: pre-wrap;
-    word-break: break-word;
-    background: #f5f5f5; border: 2px solid var(--border); border-radius: 8px;
-    padding: 20px; overflow-x: auto;
+    font-size: 0.9rem; line-height: 1.8;
+    color: var(--ink); word-break: break-word;
   }
+  .skill-md h1 { font-size: 1.4rem; font-weight: 800; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .skill-md h2 { font-size: 1.2rem; font-weight: 700; margin: 20px 0 10px; }
+  .skill-md h3 { font-size: 1.05rem; font-weight: 700; margin: 16px 0 8px; }
+  .skill-md p { margin: 8px 0; font-weight: 500; }
+  .skill-md ul, .skill-md ol { margin: 8px 0; padding-left: 20px; }
+  .skill-md li { margin: 4px 0; }
+  .skill-md code {
+    background: #f0f0f0; padding: 2px 6px; border-radius: 4px;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.82rem; color: #d73a49;
+  }
+  .skill-md pre {
+    background: #f8f8f8; border: 2px solid var(--border); border-radius: var(--radius-sm);
+    padding: 16px; overflow-x: auto; margin: 12px 0;
+    box-shadow: 2px 2px 0 var(--border);
+  }
+  .skill-md pre code {
+    background: transparent; padding: 0; color: var(--ink);
+    font-size: 0.82rem; line-height: 1.6;
+  }
+  .skill-md blockquote {
+    border-left: 4px solid var(--green); margin: 12px 0; padding: 8px 16px;
+    background: var(--bg-green); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .skill-md table {
+    border-collapse: collapse; margin: 12px 0; width: 100%;
+    border: 2px solid var(--border); border-radius: var(--radius-sm); overflow: hidden;
+  }
+  .skill-md th, .skill-md td {
+    border: 1px solid #ddd; padding: 8px 12px; text-align: left;
+  }
+  .skill-md th { background: var(--bg-base); font-weight: 700; }
+
+  /* Copy button for code blocks */
+  .code-block-wrapper { position: relative; margin: 12px 0; }
+  .code-block-wrapper pre { margin: 0 !important; }
+  .copy-btn {
+    position: absolute; top: 6px; right: 6px;
+    padding: 4px 10px; border: 2px solid var(--border); border-radius: 6px;
+    background: var(--bg-card); font-size: 0.72rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; opacity: 0;
+    box-shadow: 1px 1px 0 var(--border);
+  }
+  .code-block-wrapper:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { background: var(--yellow); }
+  .copy-btn.copied { background: var(--green); color: white; }
+
+  /* Copy button for modal header */
+  .modal-copy-btn {
+    padding: 6px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg-base); font-size: 0.8rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    box-shadow: 2px 2px 0 var(--border); margin-right: 10px;
+  }
+  .modal-copy-btn:hover { background: var(--yellow); }
+  .modal-copy-btn.copied { background: var(--green); color: white; }
   .skill-loading { font-size: 0.95rem; color: #888; font-weight: 600; padding: 20px 0; text-align: center; }
   .skill-loading::before { content: '⏳ '; }
   .skill-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
@@ -618,7 +673,10 @@
   <div class="skill-modal">
     <div class="skill-modal-header">
       <h3 id="skill-modal-title">Skill 详情</h3>
-      <div class="skill-modal-close" onclick="closeSkillModal()">×</div>
+      <div style="display:flex;align-items:center;">
+        <button class="modal-copy-btn" id="modal-copy-btn" onclick="copySkillContent()">复制内容</button>
+        <div class="skill-modal-close" onclick="closeSkillModal()">×</div>
+      </div>
     </div>
     <div class="skill-modal-body" id="skill-modal-body"></div>
   </div>
@@ -792,19 +850,64 @@
     modalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
 
+    var copyBtn = document.getElementById('modal-copy-btn');
+    if (copyBtn) { copyBtn.textContent = '复制内容'; copyBtn.classList.remove('copied'); }
+
     if (skillContents[skillId]) {
-      modalBody.innerHTML = '<pre class="skill-md">' + escapeHtml(skillContents[skillId]) + '</pre>';
+      renderSkill(skillContents[skillId]);
     } else {
       fetch('../skills/' + skillId + '/SKILL.md')
         .then(function(r) { return r.text(); })
         .then(function(text) {
           skillContents[skillId] = text;
-          modalBody.innerHTML = '<pre class="skill-md">' + escapeHtml(text) + '</pre>';
+          renderSkill(text);
         })
         .catch(function(err) {
           modalBody.innerHTML = '<div class="skill-loading">加载失败：' + err.message + '</div>';
         });
     }
+  };
+
+  function renderSkill(text) {
+    var body = text.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+    var html = marked.parse(body);
+    modalBody.innerHTML = '<div class="skill-md">' + html + '</div>';
+    setTimeout(function() {
+      wrapCodeBlocks();
+      if (window.hljs) { hljs.highlightAll(); }
+    }, 0);
+  }
+
+  function wrapCodeBlocks() {
+    var pres = modalBody.querySelectorAll('pre');
+    pres.forEach(function(pre) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = '复制';
+      btn.onclick = function() {
+        var code = pre.textContent;
+        navigator.clipboard.writeText(code).then(function() {
+          btn.textContent = '已复制';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+        });
+      };
+      wrapper.appendChild(btn);
+    });
+  }
+
+  window.copySkillContent = function() {
+    var content = modalBody.textContent;
+    if (!content || content.trim() === '加载中...') return;
+    navigator.clipboard.writeText(content).then(function() {
+      var btn = document.getElementById('modal-copy-btn');
+      if (btn) { btn.textContent = '已复制'; btn.classList.add('copied'); }
+    });
   };
 
   window.closeSkillModal = function() {
@@ -818,13 +921,6 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeSkillModal();
   });
-
-  function escapeHtml(text) {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
 })();
 
 // ========== Use Cases ==========
