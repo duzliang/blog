@@ -410,7 +410,7 @@ const WORKFLOW_DATA = {
       id: "f37",
       title: "Superpowers开源技能框架突破24万Stars：TDD驱动的AI编码Agent方法论，被Anthropic官方收录",
       platform: "GitHub/CSDN",
-      author: "Jesse Vincent (obra)
+      author: "Jesse Vincent (obra)",
       date: "2026-07-04",
       tags: ["🔧工具", "📋方法论"],
       summary: "Superpowers(obra/superpowers)GitHub星数突破24万，日增920星。核心流程：brainstorming→TDD→branch-isolation→writing-plans→subagent-driven-development，将AI编码从'直接写代码'改为'先理解再规划再执行'的纪律化流程。2026年1月被Anthropic官方插件市场收录，支持Claude Code/Cursor/Codex/Gemini CLI六大平台一次编写处处运行。",
