@@ -4,7 +4,7 @@
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-07-27",
+    lastUpdated: "2026-08-03",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,56 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f58",
+      title: "Augment Code Cosmos发布：企业级Agent编排平台，让组织的每个智能体协同运作而非孤岛作战",
+      platform: "augmentcode.com",
+      author: "Augment Code Team",
+      date: "2026-08-03",
+      tags: ["⚡新闻", "🔧工具"],
+      summary: "Augment Code发布Cosmos企业级Agent编排平台，定位'你的工程师有Agent，但你的组织没有'。解决个人级AI工具与企业级协作之间的断层：跨SDLC（软件开发生命周期）编排多个Agent、团队级上下文共享、统一治理与审计。工程团队的Agent需要组织级协调能力，Cosmos填补了这一空白。",
+      url: "https://www.augmentcode.com/"
+    },
+    {
+      id: "f57",
+      title: "2026年AI协同底座盘点：Codex/Cursor真正跑通企业业务流的核心在于外部Agent与协同平台的分层协作",
+      platform: "企鹅号",
+      author: "技术负责人",
+      date: "2026-08-03",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "外部Agent(Cursor/Claude Code/Codex)普遍存在落地障碍：缺少企业内部业务上下文、Agent间无法自动流转、AI成果无法直接触发评审/工单/文档归档等后续动作。核心解法是'Agent为专家、底座为舞台'的分层协作架构——外部Agent专注专项执行，协同底座(如飞书aily)负责上下文供给、任务编排、成果流转与企业治理。制造企业研发团队借助该架构，串联代码生成→静态扫描→线上评审流程，有效缩短版本迭代前置沟通周期。",
+      url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_9796a69b17520852"
+    },
+    {
+      id: "f56",
+      title: "AI Coding 2026深度实战指南：Agent本质=LLM+Memory+Planning+Tools死循环，Thinking Model正在颠覆传统ReAct",
+      platform: "博客园",
+      author: "hong6234",
+      date: "2026-08-03",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "2026年AI Coding核心认知：Agent本质是死循环(Loop)，直到满足停止条件。2026新趋势是Thinking Model(o3/Gemini 3 Pro)可在单次推理中完成规划，减少Agent与环境交互的往返次数。Agent落地三大痛点：死循环(设max_steps强制人类介入)、上下文溢出(实现summarize_memory()定期压缩)、工具调用失败(标准化MCP协议)。Claude Code/Trae可通过角色定义快速创建多Agent协作，日常无需自研底层框架。",
+      url: "https://www.cnblogs.com/hong6234/p/19704165"
+    },
+    {
+      id: "f55",
+      title: "Cursor官方团队17个AI工作流全开源：Cursor Team Kit，一条命令安装零依赖开箱即用",
+      platform: "博客园",
+      author: "iTech",
+      date: "2026-08-03",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Cursor官方团队将内部使用的17个AI工作流Skill全部开源，覆盖CI监控、代码审查、PR管理、UI验证等完整开发周期。不同于第三方小工具，这是Cursor内部团队每日实际使用的Plugin，一条命令安装零依赖。实测部分Skill效果惊艳，是目前最接近'官方最佳实践'的Skill合集。",
+      url: "https://www.cnblogs.com/itech/p/19986762"
+    },
+    {
+      id: "f54",
+      title: "CLAUDE.md会话管理2026黄金法则：新任务新会话、/compact优于自动压缩、/rewind重写优于修正、子代理隔离中间探索",
+      platform: "CSDN/GitCode",
+      author: "claude-code-best-practice社区",
+      date: "2026-08-03",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "claude-code-best-practice项目2026年更新会话管理核心法则：(1)新任务=新会话，避免上下文腐化 (2)/compact手动压缩优于自动压缩 (3)/rewind回到失败点重写优于修补 (4)子代理隔离中间探索，保留工具调用过程在子代理中，只将最终结论返回主上下文。CLAUDE.md保持60行以内、使用.claude/rules/*.md分割大型指令、用!command注入动态内容。/goal命令支持代理长期运行数天，是2026年最被低估的AI特性之一。",
+      url: "https://blog.csdn.net/gitblog_01115/article/details/153954044"
+    },
     {
       id: "f53",
       title: "InfoQ深度：AI编码实测反而慢19%，METR对照实验揭示主观认知与客观效率的39个百分点落差",
