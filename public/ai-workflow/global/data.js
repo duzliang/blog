@@ -1,10 +1,10 @@
 // Agentic Software Development Workflow Data
-// Last updated: 2026-07-27
+// Last updated: 2026-08-10
 
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-08-03",
+    lastUpdated: "2026-08-10",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,96 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f67",
+      title: "2026年国内主流AI Coding Plan套餐全对比：智谱/MiniMax/Kimi/火山引擎/百炼五大平台横评开发者避坑指南",
+      platform: "CSDN",
+      author: "技术社区",
+      date: "2026-08-05",
+      tags: ["⚡新闻", "🔧工具"],
+      summary: "2026年国内五大AI Coding Plan平台横评：阿里云百炼首月7.9元最低、智谱GLM按Prompt计费(1次Prompt≈1200-1600次API)、MiniMax同样按Prompt计量、Kimi全面切换Token计费模式(仅统计未命中缓存Token)。计费单位从「请求次数」到「Token消耗」的演进，反映了各平台从获客期向精细化运营的转型。",
+      url: "https://blog.csdn.net/weixin_44162814/article/details/158658021"
+    },
+    {
+      id: "f66",
+      title: "2026 AI Coding Agent从需求到上线全流程实操：替代60%以上重复性开发工作，周期缩短50%",
+      platform: "CSDN",
+      author: "Bruce2048",
+      date: "2026-08-04",
+      tags: ["📋方法论", "💡案例"],
+      summary: "2026年AI Coding Agent已从「辅助编码工具」进化为「重构开发流程的核心载体」——从需求文档解析、代码生成，到自动化测试、部署上线，替代60%以上重复性开发工作。传统「需求→开发→测试→上线」周期缩短50%以上。核心能力边界：从「能做什么」到「能稳定做好什么」的质变。",
+      url: "https://blog.csdn.net/Bruce2048/article/details/159385657"
+    },
+    {
+      id: "f65",
+      title: "别再「写」代码了：2026年Vibe Coding实战全指南，Intent-Driven Development核心理念",
+      platform: "CSDN",
+      author: "一线开发者",
+      date: "2026-08-05",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "Vibe Coding本质是Intent-Driven Development(意图驱动开发)：传统开发是需求→架构设计→手写逻辑→调试→部署，Vibe Coding是需求→传递Vibe(自然语言+约束文件)→AI Agent执行→验证/微调→自动化部署。爽点包括消除冷启动恐惧、跨领域无缝切换、心流不中断；痛点是超过50个文件后上下文偏移。2026模型选型建议：Claude 3.5/4.5 Sonnet适合复杂逻辑/重构，GPT-5.2覆盖通用场景。",
+      url: "https://blog.csdn.net/2201_75368691/article/details/157943025"
+    },
+    {
+      id: "f64",
+      title: "Cursor AI编辑器完全教程2026最新版：安装/配置/核心功能/快捷键/AI对话/代码重构实战",
+      platform: "CSDN",
+      author: "w395919590",
+      date: "2026-08-05",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Cursor AI编辑器2026完整实战教程：基于VS Code内核，内置Claude/GPT-4等AI模型。核心功能包括AI代码补全(Ctrl+Tab接受补全)、AI对话(Ctrl+L唤出)、代码解释/重构/Bug修复。安装支持macOS .dmg和Windows .exe，订阅方案分Free和Pro两档。Cursor已从「更聪明的代码补全器」进化为「全栈AI开发协作系统」。",
+      url: "https://blog.csdn.net/w395919590/article/details/158978078"
+    },
+    {
+      id: "f63",
+      title: "2026年AI工作流革命：从本地Agent到跨平台自动化实践，vLLM+MLX+systemd完整方案",
+      platform: "博客园",
+      author: "xiaoheiba",
+      date: "2026-08-05",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "2026年AI工作流范式迁移：从「调用一个API」走向「设备端自主感知—规划—执行—反馈」完整闭环。生产环境主力模型Qwen2.5-4B-Instruct与Phi-4-3.8B经AWQ量化+KV Cache优化后，MacBook M3 Pro推理延迟稳定<800ms(P99)。工具链协同：vLLM 0.7.3 + PagedAttention v2做动态批处理，MLX替代PyTorch启动耗时下降62%，封装systemd服务+cgroup内存限制实现热重载。",
+      url: "https://www.cnblogs.com/xiaoheiba/p/19833950"
+    },
+    {
+      id: "f62",
+      title: "Uber开始给AI「限额」：92%工程师使用AI后，企业级AI使用策略反思",
+      platform: "企鹅号",
+      author: "Olimpiu Pop",
+      date: "2026-08-05",
+      tags: ["⚡新闻", "📋方法论"],
+      summary: "Uber推行「零增长技术栈」(Zero Growth Stack)，在92%工程师使用AI后开始给AI使用「限额」。战略核心：容量增长与业务需求增长解耦，优先推进自动化运行时优化及严格的AI生命周期管理，降低传统资源扩容开销。反映大厂开始从「鼓励AI使用」转向「精细化AI治理」的新阶段。",
+      url: "https://so.html5.qq.com/page/real/search_news?docid=70000021_7046a7293f201552"
+    },
+    {
+      id: "f61",
+      title: "OpenHands v2026.07更新：AI-Driven Development开源平台7070 Commits里程碑",
+      platform: "GitHub",
+      author: "All-Hands-AI",
+      date: "2026-08-05",
+      tags: ["⚡新闻", "🔧工具"],
+      summary: "OpenHands(AI-Driven Development开源平台)2026年7月里程碑版本更新，项目累计7070次提交。支持多Agent协作、Skill系统、Enterprise部署、Frontend UI。定位为开源版Devin，覆盖从需求理解到代码实现的完整Agent工作流。",
+      url: "https://github.com/all-hands-ai/openhands"
+    },
+    {
+      id: "f60",
+      title: "Agentic Design Patterns 2026指南：六种核心设计模式，从ReAct到完全自主Agent循环",
+      platform: "SitePoint",
+      author: "SitePoint Team",
+      date: "2026-08-05",
+      tags: ["📋方法论"],
+      summary: "Agentic设计模式已从研究好奇进入生产必需品阶段。2026年核心演进：从Chain-of-thought到ReAct风格交织推理，再到完全自主Agent循环(规划-执行-反思-恢复无需人工干预)。LangGraph/LangGraph.js已达stable semver版本，可处理生产级并发Agent实例。覆盖六种核心设计模式和选型决策框架。",
+      url: "https://www.sitepoint.com/the-definitive-guide-to-agentic-design-patterns-in-2026"
+    },
+    {
+      id: "f59",
+      title: "Symphony协议：OpenAI 2026年4月发布的开源多Agent协作规范，Linear作为状态机驱动并行Agent",
+      platform: "博客园",
+      author: "aimagician",
+      date: "2026-08-05",
+      tags: ["⚡新闻", "📋方法论"],
+      summary: "Symphony是OpenAI 2026年4月发布的开源协议规范(Apache 2.0)，将Linear issue tracker重新定义为Agent调度状态机，让并行Agent从「人类逐个监督」变为「issue-driven自动调度」。当你同时开四个Codex CLI会话对应四个并行任务时，Symphony解决的不是能力问题，是协调问题。",
+      url: "https://www.cnblogs.com/aimagician/p/20047774"
+    },
     {
       id: "f58",
       title: "Augment Code Cosmos发布：企业级Agent编排平台，让组织的每个智能体协同运作而非孤岛作战",
