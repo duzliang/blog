@@ -1,10 +1,10 @@
 // Agentic Software Development Workflow Data
-// Last updated: 2026-08-10
+// Last updated: 2026-08-24
 
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-08-10",
+    lastUpdated: "2026-08-24",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,106 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f77",
+      title: "Claude Code Subagents 2026生产级实战手册：并行编排、SubagentStop门控与嵌套Agent",
+      platform: "Totalum",
+      author: "Totalum Team",
+      date: "2026-08-11",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "Claude Code subagent生产级落地：用'并行separate subagents'短语明确扇出，每个subagent限定scope与tools防相互污染；SubagentStop hook做测试门控/密钥扫描/越界写阻断；嵌套subagent深度上限5。Skill教流程+Hook强制门控+Subagent委派三者组合才达生产级，Anthropic内部基准任务成功率因此提升最多10个百分点。",
+      url: "https://www.totalum.app/blog/claude-code-subagents-totalum"
+    },
+    {
+      id: "f76",
+      title: "MCP、Subagents与Hooks三位一体：Claude Code最值得收藏的实战指南",
+      platform: "DEV Community",
+      author: "Alvarito",
+      date: "2026-08-19",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "系统讲解Claude Code三大机制：.claude/agents/定义subagent(frontmatter含tools/disallowedTools/model/mcpServers)，独立上下文隔离探索/审查/验证；MCP作为外部集成层(只读优先)；Hooks在PreToolUse/PostToolUse生命周期做确定性护栏。并行subagent示例：'用separate subagents并行研究auth/database/API模块'。Slash command与Skill已合并，重复提示应封装为Skill。",
+      url: "https://dev.to/alvarito1983/mcp-subagents-and-hooks-in-claude-code-the-guide-i-wish-id-had-4gg"
+    },
+    {
+      id: "f75",
+      title: "Claude Code Subagent约定手册：把subagent当团队约定而非prompt技巧",
+      platform: "Claude Workshop",
+      author: "Claude Workshop",
+      date: "2026-06-23",
+      tags: ["📋方法论"],
+      summary: "核心观点：subagent不是prompt trick，而是带job description的轻量队友。给出可落地的repo级约定模板：何时用subagent(安全审查/测试修复/迁移规划)、每个subagent必备role+scope+tools+output+stop rule四要素、CLAUDE.md只放持久约束(建议删掉首版30%)、MCP只读优先。可审查性(reviewable)是agent团队协作的胜负手。",
+      url: "https://www.claudeworkshop.com/research/claude-team-conventions-20260623-1448"
+    },
+    {
+      id: "f74",
+      title: "Cursor Agent Mode 2026使用手册：选对模式比换模型更重要",
+      platform: "DEV Community",
+      author: "dublecc",
+      date: "2026-07-20",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "多数觉得Cursor'不稳定'的人不是模型问题而是模式问题。详解四种工具切换：Agent(自主多文件)、Ask(只读问答)、Plan(写代码前先规划)、Inline Edit(Cmd+K精准改动)。给出决策表——重命名用Inline Edit、解释用Ask、新功能取舍用Plan、12文件重构必先进Plan。三大习惯：选对模式、写代码前先规划、逐行读diff。",
+      url: "https://dev.to/dublecc/cursor-agent-mode-how-to-use-it-in-2026-3afk"
+    },
+    {
+      id: "f73",
+      title: "Cursor官方Agent最佳实践：TDD、代码库探索与Git工作流三类范式",
+      platform: "Cursor",
+      author: "Cursor Team",
+      date: "2026-01-09",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Cursor官方给出的Agent常见工作流：①测试驱动开发——让Agent按输入输出对写测试、明确TDD避免mock、跑测试确认失败后再实现；②理解陌生代码库——像问队友一样提问，Agent同时用grep与语义搜索；③Git工作流——/pr命令自动git diff、写commit、推送并用gh pr create开PR。支持截图/设计稿/Figma MCP做设计到代码。",
+      url: "https://cursor.com/cn/blog/agent-best-practices"
+    },
+    {
+      id: "f72",
+      title: "Claude Code四大定制机制选型指南：CLAUDE.md/Hooks/Skills/Subagents怎么选",
+      platform: "阿里云开发者社区",
+      author: "技术社区",
+      date: "2026-07-02",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "基于2026-07官方文档的四大机制决策表：CLAUDE.md(每次会话加载的持久指令/软约束)、Hooks(生命周期硬约束，exit 2阻断)、Skills(按需加载的可复用流程，单文件命令已合并进Skill)、Subagents(独立上下文分工)。选型口诀：该'知道'的写CLAUDE.md、必须'发生'的写Hook、反复'照做'的做Skill、不想'污染主上下文'的给Subagent。CLAUDE.md超200行用rules/按路径拆分。",
+      url: "https://developer.aliyun.com/article/1745131"
+    },
+    {
+      id: "f71",
+      title: "2026 Agent Pair Programming格局：人机协作三种模式与七大平台并行编排",
+      platform: "Zylos AI",
+      author: "Zylos Research",
+      date: "2026-05-26",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "Anthropic 2026 Agentic Coding报告核心张力：开发者60%工作用AI，但能完全委托的仅0–20%。七大平台(Claude Code/Copilot/Codex/Cursor/Antigravity/Windsurf/Devin)均从单agent转向并行编排。人机协作三模式：Supervisor(人定规格、Agent执行、提交前审查)、Collaborative(按子任务交替角色)、Autonomous(高危、仅限隔离项目)。McKinsey：65%高绩效AI团队定义了human-in-the-loop校验。",
+      url: "https://zylos.ai/zh/research/2026-05-26-ai-agent-pair-programming-collaboration-patterns"
+    },
+    {
+      id: "f70",
+      title: "面向资深工程师的AI Pair Programming：探索/测试规划/审查/调试的分层工作流",
+      platform: "Personal Blog",
+      author: "Nazar Boyko",
+      date: "2026-05-01",
+      tags: ["📋方法论"],
+      summary: "资深工程师的AI结对不是让AI自动驾驶。给出可复用prompt模板：用AI做探索(先画系统地图再自己验证)、测试规划(实现前先出测试计划含边界/授权/失败用例)、文档生成(标注不确定性)、代码审查(只做顾问不approve)、调试('先调查后给补丁')、小步实现(约束scope保持diff小)。核心循环：AI映射→人验证→AI澄清→人决策。",
+      url: "https://www.nazarboyko.com/en/articles/ai-pair-programming-for-senior-engineers"
+    },
+    {
+      id: "f69",
+      title: "Vibe Coding 2026最佳实践：7条有效、3个陷阱，何时该停止Vibe",
+      platform: "Personal Blog",
+      author: "Kunal Ganglani",
+      date: "2026-07-10",
+      tags: ["📋方法论"],
+      summary: "2026 Vibe Coding实战：把规则写进CLAUDE.md常驻上下文；每次成功迭代后commit(频率应高于传统开发)并写有意义的message；先写测试再让AI生成实现以打破'循环测试'假象；识别AI开始绕圈(重复相似方案、跨文件深度集成、性能优化)时切回手写。三大陷阱：一次生成整个App的幻想、跳过安全、丢失变更追踪。",
+      url: "https://www.kunalganglani.com/blog/vibe-coding-best-practices-2026"
+    },
+    {
+      id: "f68",
+      title: "v0 vs Lovable 2026对比：组件级归v0、全栈MVP归Lovable，混合工作流成主流",
+      platform: "AI Agent Rank",
+      author: "AI Agent Rank",
+      date: "2026-05-21",
+      tags: ["🔧工具"],
+      summary: "2026 AI前端生成器实测：v0(Vercel)输出React+shadcn/ui+Tailwind，组件级代码质量A-、贴近'你自己会写的代码'，适合现有项目内加组件；Lovable深度集成Supabase(auth/DB/RLS自动生成)，0→1全栈MVP更快(带登录的todo 8步25分钟)。主流混合流：Lovable做原型→导出GitHub→Cursor/v0做后续组件，既快又可持续维护。",
+      url: "https://aiagentrank.io/blog/v0-vs-lovable-2026"
+    },
     {
       id: "f67",
       title: "2026年国内主流AI Coding Plan套餐全对比：智谱/MiniMax/Kimi/火山引擎/百炼五大平台横评开发者避坑指南",
