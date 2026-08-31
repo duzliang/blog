@@ -4,7 +4,7 @@
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-08-24",
+    lastUpdated: "2026-08-31",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,56 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f82",
+      title: "Anthropic官方Claude Code最佳实践：验证优先、规划先于执行、Subagent隔离探索",
+      platform: "Anthropic Engineering",
+      author: "Anthropic Engineering Team",
+      date: "2026-08-31",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Anthropic官方发布Claude Code最佳实践，核心三条：①验证先于断言——给Claude可执行的检查(test/build/lint/截图diff)，而非主观声称"看起来好了"；②规划先于执行——Exploration→Plan→Implement→Commit四阶段，避免解错问题；③Subagent隔离中间探索——子代理独立上下文，研究结果返回主会话而非污染主上下文。验证标准应写在同一prompt里，含具体测试用例和命令。",
+      url: "https://www.anthropic.com/engineering/claude-code-best-practices"
+    },
+    {
+      id: "f81",
+      title: "Beyond Code Autocomplete 2026实战：bounded agentic workflow + MCP统一上下文层 + 面向Agent友好的代码库",
+      platform: "DEV Community",
+      author: "johnnylemonny",
+      date: "2026-08-31",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "2026开发者工作流已从AI补全升级为AI委派，70%+工程师日常使用高级AI工具。MCP(Model Context Protocol)成为统一上下文层——让Agent安全连接Sentry/DB Schema/Git等工具而非人工复制粘贴。面向Agent友好的代码库三要素：严格TypeScript类型守卫、Next.js/Nuxt约定文件夹结构、完整测试套件使Agent可自验证。React Compiler等工具已接管微观优化，开发者聚焦数据流和架构决策。",
+      url: "https://dev.to/johnnylemonny/beyond-code-autocomplete-how-to-build-a-modern-agentic-workflow-in-2026-566f"
+    },
+    {
+      id: "f80",
+      title: "Cursor Vibe Coding 2026完全指南：.cursorrules工程化 + CRTC Prompt模板 + Rules/Skills分层架构",
+      platform: "稀土掘金",
+      author: "技术社区",
+      date: "2026-08-31",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "2026年Cursor Vibe Coding系统性指南：①.cursorrules工程化——随项目迭代积累成代码DNA，AI输出质量随规则增长而复合提升；②CRTC Prompt模板——Context(背景)+Request(任务)+Constraints(约束)+Completion(完成标准)，避免模糊指令；③Rules/Skills分层——Rules管边界(.cursor/rules/*.mdc)，Skills管流程(.cursor/skills/)，两者互补；④MCP连接外部工具(Figma/数据库)实现设计稿→代码直转。",
+      url: "https://juejin.cn/post/7647086721049395209"
+    },
+    {
+      id: "f79",
+      title: "AI Coding Agents 2026全景：多Agent分工协作 + 自主编码五阶段 + 企业级落地风险矩阵",
+      platform: "The Code Beast",
+      author: "The Code Beast",
+      date: "2026-08-17",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "AI Coding Agent已从单步补全进化为完整开发伙伴：Planner Agent制定策略→Developer Agent写代码→Testing Agent生成测试→Reviewer Agent审查安全与架构。自主编码五阶段：需求解析→多Agent编排→迭代生成→自我修复测试循环→生产部署。AI生成代码每千行主要问题比人类高1.7倍，安全漏洞更频繁——人工Review仍是生产级交付不可替代的环节。",
+      url: "https://thecodebeast.com/ai-coding-agents-in-2026-how-autonomous-ai-is-changing-software-development"
+    },
+    {
+      id: "f78",
+      title: "Claude Code CLI + Agentic Coding全流程实战：分支隔离 + 自动测试闭环 + /compact上下文压缩",
+      platform: "SAPIREX",
+      author: "SAPIREX",
+      date: "2026-08-18",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Claude Code终端级Agentic开发全流程：①分支隔离——任何不理想修改可git reset干净丢弃，保障main稳定；②自动测试闭环——Agent写逻辑→写单元测试→跑测试套件→分析失败→自我修复直到全通过；③/compact主动压缩——重大探索或调试阶段后运行，防止token耗尽；④CLAUDE.md持续更新——依赖、测试脚本或架构规则变更时同步更新；⑤代码diff严格审查——像同事PR一样验证逻辑、边界、安全后再合并。",
+      url: "https://sapirex.com/en/claude-code-cli-setup-and-agentic-coding-workflow-autonomous-terminal-pair-programming-guide"
+    },
     {
       id: "f77",
       title: "Claude Code Subagents 2026生产级实战手册：并行编排、SubagentStop门控与嵌套Agent",
