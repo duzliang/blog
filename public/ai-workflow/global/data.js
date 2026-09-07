@@ -4,7 +4,7 @@
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-08-31",
+    lastUpdated: "2026-09-07",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,66 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f88",
+      title: "Agentic前端开发2026趋势：Forrester揭示3-10倍工程吞吐提升，企业从试验进入规模化生产",
+      platform: "Forrester",
+      author: "Diego Lo Giudice, VP Principal Analyst",
+      date: "2026-09-07",
+      tags: ["⚡新闻", "📋方法论"],
+      summary: "Forrester《Agentic软件开发现状2026》报告揭示：TuringBot已进化为贯穿整个SDLC的Agent团队，非单点工具。领先企业工程吞吐提升3-10倍，原因在于AI从仅覆盖编码（+30-40%）转向贯穿规划→设计→构建→测试→交付全链路，瓶颈不再转移而是消除。开发者角色演进：PM vibe原型→开发审查/编排Agent→测试员设质量目标→架构师定约束/上下文。治理关键：Agent幻觉传播比人类快、需AI生成内容同等严格测试与审计链。",
+      url: "https://www.forrester.com/blogs/agentic-software-development-takes-the-lead-from-code-assistants-to-orchestrated-sdlc-agents/"
+    },
+    {
+      id: "f87",
+      title: "Appwrite发布2026年Vibe Coding七大趋势：Spec驱动开发取代Prompt & Pray、小时级Agent替代秒级Agent、上下文工程成核心技能",
+      platform: "Appwrite",
+      author: "Aishwari Pahwa",
+      date: "2026-09-07",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "Appwrite年度Vibe Coding趋势报告2026：①Spec驱动开发取代Prompt & Pray——先写tight specs作合约，代码成可再生制品；②小时级Agent替代秒级Agent——一次交接、自主跑完、回来收PR，突破人类盯盘瓶颈；③上下文工程成核心技能——规则文件/文档/Memory/明确信号构成策略，无此者Agent反复撞同一堵墙；④AI原生后端崛起——后端若AI友好(清晰SDK/强默认/文档=模型上下文)，AI工作流自然流畅；⑤测试先行——模型先写测试再实现再循环，测试即质量门；⑥多模型编排——快便宜模型做样板、前沿模型做架构、专项模型做安全Review；⑦一人产品团队兴起——Vibe Coding+现代后端+AI原生部署=单人团队可交付以前需一年小团队才能做的产品。",
+      url: "https://appwrite.io/blog/post/7-vibe-coding-trends-every-developer-should-know-in-2026"
+    },
+    {
+      id: "f86",
+      title: "Cursor vs Claude Code 2026黄金工作流：双工具分型协同，/simplify+Git Worktree+Plan Mode成三大支柱",
+      platform: "Luis Mori / Anthropic",
+      author: "Luis Mori Guerra",
+      date: "2026-09-07",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "实战型Cursor+Claude Code双工具分型协同工作流：①Claude Code Plan Mode——先读后写，强制Agent显式推理，尤其适合多步变更和代码探索；②Claude Code自定义Subagents——.claude/agents/定义专业子Agent，工具受限+可团队共享；③Git Worktree隔离——真正并行而非愿望，支持自动清理/独立分支/并行Agent；④/simplify官方确认(v2.1.63内置)——后实现清理和Review阶段，捕获代码笨拙/重复/过重感，等同强人类Code Review pass；⑤/batch配套(v2.1.63同发)——可分解大任务的批量并行处理，是「大规模迁移」搭档；⑥Cursor Subagents最佳场景——并行研究：代码路径/抽象层/测试，三线程同时探索主线程保持干净。",
+      url: "https://luismori.dev/article/cursor-subagents-and-claude-code-simplify-practical-workflow"
+    },
+    {
+      id: "f85",
+      title: "Code Pipelines发布2026 Cursor+Claude Code 3-4倍提速实操指南：30分钟设置换每周数小时回收",
+      platform: "Code Pipelines",
+      author: "Code Pipelines",
+      date: "2026-09-07",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "多数开发者只用40%能力，浪费时间在：模糊Prompt→重做→无持久上下文→错配工具→Review瓶颈。30分钟一次性设置：①写.cursorrules和CLAUDE.md——覆盖栈版本/文件结构/命名/禁区/测试命令，消除大部分不规范输出；②加一个MCP Server(如Postgres)——Agent直查活Schema取代猜列名/数据类型/运行时报错Query；③配分支保护和CI——PR+CI通过才合流，让Agent模式安全自信跑更远。关键习惯：任务前花3分钟写Spec(3分钟Spec→10分钟Review) vs 无Spec(0分钟→45分钟修正)。",
+      url: "https://codepipelines.com/guides/ship-faster-cursor-claude-2026.html"
+    },
+    {
+      id: "f84",
+      title: "2026前端团队AI Coding Agent全景：Frontman/Cursor/Claude Code/Copilot四型分型，运行时上下文差距是关键",
+      platform: "Frontman.sh",
+      author: "Frontman Team",
+      date: "2026-09-07",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "2026年前端AI Coding Agent四型分型：①前端视觉编辑(现有App)选Frontman——从Live DOM+计算CSS+选中元素+框架源码上下文启动，最佳搭档supported stacks；②开发者主导Repo工作选Cursor——强IDE workflow+语义代码库上下文；③终端原生工程师选Claude Code——强代码推理+命令行流+文件编辑+测试迭代；④GitHub-first团队选Copilot——熟悉IDE+GitHub workflow+completion/chat/review，广覆盖非前端专项。核心洞察：前端团队独特挑战是运行时上下文差距——源文件说p-4 md:p-8，浏览器才知道当前viewport实际padding。视觉Bug依赖DOM状态/viewport宽度/CSS cascade/component渲染，源文件+终端Agent无法覆盖此差距。",
+      url: "https://frontman.sh/blog/best-ai-coding-agents-frontend-development-teams-2026"
+    },
+    {
+      id: "f83",
+      title: "Ampcome发布2026年前端AI Agent完整指南：15工具横评+语音Agent内置应用+70%遗留前端重写失败根因",
+      platform: "Ampcome",
+      author: "Ampcome Team",
+      date: "2026-09-07",
+      tags: ["🔧工具", "📋方法论", "⚡新闻"],
+      summary: "Ampcome 2026前端AI Agent完整指南：①15工具分三类——IDE类(Cursor/Copilot/Claude Code/Windsurf/Codex/Gemini Code Assist)、Prompt-to-App类(v0/Lovable/Bolt.new/Replit Agent)、Governed Enterprise类(Assistents.ai)；②AI Agent正被部署为App内置功能——零售App内置语音支持Agent、接待平台内置预订Agent、房地产门户内置租客服务Agent，前端不仅构建更快更智能；③Legacy前端重写失败率70%——逻辑锁在UI行为非源码，视觉逆向工程Agent正在解决此问题；④选型核心标准：现有代码感知/运行时上下文/diff可审查/响应式QA/可访问性基础/成本/团队适配。",
+      url: "https://www.ampcome.com/post/ai-agents-for-frontend-development"
+    },
     {
       id: "f82",
       title: "Anthropic官方Claude Code最佳实践：验证优先、规划先于执行、Subagent隔离探索",
