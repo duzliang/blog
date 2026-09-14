@@ -4,7 +4,7 @@
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-09-07",
+    lastUpdated: "2026-09-14",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -247,8 +247,84 @@ const WORKFLOW_DATA = {
 
   feed: [
     {
+      id: "f95",
+      title: "Claude Code全工具链协同实战：三层生态定位+双工具组合ROI最优解，Cursor/Codex/Claude Code三型分工而非竞争",
+      platform: "AI Workflow Center",
+      author: "AI Workflow Center",
+      date: "2026-09-14",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "2026年AI编程工具市场已形成三层生态分工：Cursor赢IDE内联编辑（代码片段/快速修复）、Codex赢大规模并行任务（云沙箱+异步队列，扔100个任务明天收结果）、Claude Code赢Agent编排系统（CLAUDE.md多层配置+Skills可复用模块+Hooks确定性自动化+MCP外部集成+Subagent并行+Plugin打包）。推荐组合：日常足够用→Claude Code Max 5x($100)+Cursor Pro($20)=$120/月；全火力版→Claude Code Max 20x($200)+Codex API($100-$200)+Cursor Pro($20)=$320-$420/月。Claude Code月省70%成本的五大技巧：①CLAUDE.md按目录分层（每个子目录CLAUDE.md仅在该目录激活），②模型分层选型（Sonnet覆盖80%日常编码/DeepSeek V4 Flash做分类路由），③/compact而非/clear保持Prompt Cache（60%上下文使用触发压缩），④大任务拆分为短会话+Git Worktree并行隔离，⑤Skills按需加载而非全局加载。",
+      url: "https://aiworkflowcenter.com/blog/claude-code-complete-guide-2026"
+    },
+    {
+      id: "f94",
+      title: "Agentic Engineering 2026系统性指南：从Vibe Coding进化到工程化实践，Plan-Then-Execute成标准架构",
+      platform: "TEKK.coach / Nyosegawa / dev.to",
+      author: "TEKK.coach Research",
+      date: "2026-09-14",
+      tags: ["📋方法论"],
+      summary: "2026年Agentic Engineering已成为独立学科而非Vibe Coding别名：核心转变是开发者从'写代码'变为'协调Agent'，Plan-Then-Execute成为标准架构。Addy Osmani主张成功开发者70%时间用于问题定义和验证策略，30%用于执行（与传统分工完全相反）。TEKK.coach强调规划层（Plan）是决定下游Agent执行质量的胜负手：Living Spec = TL;DR + 明确的Building/Not-Building边界 + 带验收标准的子任务 + 带风险等级的假设 + 端到端验证场景。Beads模式通过外部任务状态解决Agent上下文丢失，将Claude Code从'持续盯盘'转变为可自主执行Epic的工程系统。MIT Missing Semester已将Agentic Coding列为CS核心技能。",
+      url: "https://tekk.coach/build/agentic-coding-workflow/"
+    },
+    {
+      id: "f93",
+      title: "Agentic Workflows四大模式2026生产实战：带人工审批门控+全自主回滚+并行Agent链+验证循环",
+      platform: "DEV Community",
+      author: "Claude Guide",
+      date: "2026-09-14",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "2026年Agentic Workflows四种生产级模式：①带人工审批门控——Agent自主执行但在高风险节点（数据库迁移/部署/不可逆操作）暂停等人确认；②全自主回滚——基于git分支自动隔离执行，自动检测typecheck/test失败并git checkout恢复；③并行Agent链——三路Agent同时处理后端API/前端组件/测试用例，通过asyncio.gather聚合结果；④验证循环——Agent自主实现→自验证测试→失败修复→直到全部通过，每步含明确检查命令。四种模式对应不同场景，是Claude Code/Codex/Cursor的实际落地路径。",
+      url: "https://dev.to/claudeguide/agentic-workflows-the-next-frontier-in-developer-tools-2026-4778"
+    },
+    {
+      id: "f92",
+      title: "Agentic Coding SDLC五阶段深度落地：规划→编码→测试→部署→运维全链路AI Agent接入点",
+      platform: "quidproquo.cc",
+      author: "quidproquo",
+      date: "2026-09-14",
+      tags: ["📋方法论"],
+      summary: "Stripe每周合并1300个PR、Spotify顶级工程师自去年12月起不再手写代码——Agentic AI接入SDLC五阶段实战：①规划/设计——Agent读取PRD自动拆解用户故事和技术任务；②编码——Claude Code CLI作为入口点，给任务描述即在repo内自主执行；③测试——Agent读diff找未覆盖路径写测试并commit；④部署/安全——GitHub Agentic Workflows（Markdown定义工作流）对接Claude Code/Copilot；⑤运维——告警订阅→根因分析→开issue或直接热修。三个关键设计原则：Spec优先（明确终点状态远优于逐步指令）、沙箱隔离（任务在隔离环境执行，无生产访问）、Human-in-the-Loop（关键决策点必须人工介入）。",
+      url: "https://quidproquo.cc/posts/ai/2026-04-18-agentic-ai-sdlc-workflow-en"
+    },
+    {
+      id: "f91",
+      title: "Agentic Coding可靠性工程栈：Agent幻觉传播比人类快三大策略治理，SPEC-first成行业共识",
+      platform: "Forrester/drs-web",
+      author: "drs-web",
+      date: "2026-09-14",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "Forrester 2026 Agentic SDLC报告核心：Agent幻觉传播速度远超人类——AI生成的错误比人类更快扩散到整个代码库，需要与AI生成内容同等严格的测试与审计链。瓶颈不再转移而是消除：isolated coding提升30-40%若规划/测试/发布仍为手动，整体团队效率提升不足10%。.agent-context.yml给编排Agent足够上下文（项目约定/test框架/PR模板/必须人工Review的变更类型）可将'人工写一行+等两小时Review'变为'Agent自动实现开PR含Trade-off说明'。Spec-first成行业最强共识：Thoughtworks Technology Radar将SDD评级为Assess，Spec-as-source模式（人类只编辑规格，代码由Agent生成永不手动编辑）正在兴起。",
+      url: "https://drs-web.co.uk/?p=420/"
+    },
+    {
+      id: "f90",
+      title: "从Vibe Coding进化到Agentic Engineering实战手册：五大Playbook for Production终结Comprehension Debt",
+      platform: "DEV Community",
+      author: "Jason Guo",
+      date: "2026-09-14",
+      tags: ["📋方法论"],
+      summary: "Addy Osmani提出Agentic Engineering核心风险'Comprehension Debt'：当Agent生成代码快过人类阅读速度时，你正在透支未来的系统维护能力。AI轻易完成前80%，但集成/隐蔽Bug/性能调优的后20%需要深度理解。Playbook for Production五步：①Prompts as Specifications——Acceptance Criteria+Boundary Conditions+Non-goals替代模糊指令；②Automated Verification as Guardrails——AI先写测试用例再实现，Strict Type Checking让编译器过滤低级错误；③原子化迭代——每次变更仅改3-5个文件保证diff可审查；④强制生成Change Summary——解释不清则代码必定有问题；⑤Fresh Context Review——在新会话窗口让AI审查自己代码以避免'Sycophantic Agreement'。",
+      url: "https://dev.to/jasonguo/from-vibe-coding-to-agentic-engineering-when-coding-becomes-orchestrating-agents-1b0n"
+    },
+    {
+      id: "f89",
+      title: "Cursor Vibe Coding纪律化实战：Prompt Patterns+.cursorrules+Guardrails三件套，Flow Without Regret",
+      platform: "AverageDevs",
+      author: "AverageDevs",
+      date: "2026-09-14",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Cursor Vibe Coding生产级纪律化实践：①核心循环——1-3句话描述变更含约束和验收标准→让Cursor提出编辑→像PR Reviewer一样读diff→跑typecheck/lint/test→修复delta后commit；②有效Prompt模板——Task+Constraints+Acceptance（例：300ms debounce、100%类型安全、no any、lint clean）；③四大场景Prompt——'Edit, don't rewrite'做精准改动、'Plan then execute'分两步、'Constrained refactor'保持运行时行为不变、'Generate with tests'测试先行；④Guardrails实践——小爆炸半径优先文件级改动、幂等脚本含非交互标志、无secret明文在prompt、用feature flags隔离风险；⑤Claude Code做独立视角——用新鲜上下文评估架构/安全/代码质量/测试覆盖，给出评分和改进建议。",
+      url: "https://www.averagedevs.com/blog/vibe-coding-with-cursor"
+    },
+    {
       id: "f88",
       title: "Agentic前端开发2026趋势：Forrester揭示3-10倍工程吞吐提升，企业从试验进入规模化生产",
+      platform: "Forrester",
+      author: "Diego Lo Giudice, VP Principal Analyst",
+      date: "2026-09-07",
+      tags: ["⚡新闻", "📋方法论"],
+      summary: "Forrester《Agentic软件开发现状2026》报告揭示：TuringBot已进化为贯穿整个SDLC的Agent团队，非单点工具。领先企业工程吞吐提升3-10倍，原因在于AI从仅覆盖编码（+30-40%）转向贯穿规划→设计→构建→测试→交付全链路，瓶颈不再转移而是消除。开发者角色演进：PM vibe原型→开发审查/编排Agent→测试员设质量目标→架构师定约束/上下文。治理关键：Agent幻觉传播比人类快、需AI生成内容同等严格测试与审计链。",
+      url: "https://www.forrester.com/blogs/agentic-software-development-takes-the-lead-from-code-assistants-to-orchestrated-sdlc-agents/"
       platform: "Forrester",
       author: "Diego Lo Giudice, VP Principal Analyst",
       date: "2026-09-07",
