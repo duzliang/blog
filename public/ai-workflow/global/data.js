@@ -1,10 +1,10 @@
 // Agentic Software Development Workflow Data
-// Last updated: 2026-08-24
+// Last updated: 2026-09-21
 
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-09-14",
+    lastUpdated: "2026-09-21",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -247,6 +247,86 @@ const WORKFLOW_DATA = {
 
   feed: [
     {
+      id: "f103",
+      title: "Cursor 深度实战15个提效心法：用@精准喂上下文+语义级重构+自定义命令把团队规范内化进编辑器",
+      platform: "51CTO博客",
+      author: "51CTO博客",
+      date: "2026-09-17",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "系统总结 Cursor 15 个实战提效心法：上下文管理上避免滥用 @Codebase，优先用 @文件路径 明确作用域、跨文件用 @Workspace、查文档用 @Docs；重构上选中代码 + Cmd+L 做语义级重构、函数重命名后用 AI 分析调用链一键同步、顶部注释（@context/@style）锁定补全风格；调试上选中报错堆栈让 AI 定位 Root Cause、@Run 执行脚本失败自动分析日志、选中函数生成覆盖边界条件的 Jest 单测；工作流定制上配置 Custom Instructions 统一编码规则、绑定本地命令（如 git-check）实现自然语言调用、根目录 .cursorrules 声明技术栈与标准，把团队规范内化进编辑器，让 AI 成为思维的自然延伸而非被牵着鼻子走的工具。",
+      url: "https://blog.51cto.com/u_17697892/14939596"
+    },
+    {
+      id: "f102",
+      title: "深度解锁 Cursor：思维链提问+多文件上下文管理+Composer自动化闭环，把AI从补全工具升级为本地智能体",
+      platform: "51CTO博客",
+      author: "51CTO博客",
+      date: "2026-09-10",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "揭示 Cursor 被多数开发者忽视的高阶用法：①思维链驱动替代指令式提问——结构化系统提示词强制 AI 先分析项目结构/API 定义/数据库 schema，再输出设计 rationale 与符合规范的实现，显著降低幻觉、提升开箱即用率；②主动管理上下文——Ctrl/Cmd 多文件批量引用 auth/db/config 等分散模块，结合路径过滤（如 @src/utils @src/services --filter \"contains:auth\"）聚焦相关代码；③自动化工作流闭环——Ctrl+I Composer 模式基于错误日志自动修复+补测试，跨文件架构重构（如同步→异步改造+路由适配+文档更新）让 AI 自主规划任务、执行修改并验证结果，扮演初级 PM；④模型与角色精细化调优——按场景切换大小模型并配置定制 System Prompt 固化技术栈/编码风格/安全约束。目标是把 AI 从代码补全工具升级为具备架构理解与端到端执行能力的本地智能体。",
+      url: "https://blog.51cto.com/u_11760208/14923213"
+    },
+    {
+      id: "f101",
+      title: "AI 正在吃掉前端开发流程：从「写代码」到「管AI」，Next.js 生成 AGENTS.md、ArrowJS 定位「代理时代」UI 框架",
+      platform: "稀土掘金",
+      author: "稀土掘金",
+      date: "2026-07-07",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "前端工作流已从「手写代码」进化为「AI 生成+人工审核」：编码 Agent（Cursor SOLO、Windsurf、Claude Code、通义灵码、Comate）成为「默认队友」，支持需求拆解、多智能体协同、整页生成、自动测试与重构，页面开发周期平均缩短 70%+，设计到代码准确率超 92%；WebGPU 1.0 已全浏览器兼容，配合 Transformers.js/ONNX Runtime Web 可在本地跑 Llama 3、Gemini Nano 等轻量模型（数据不出客户端，延迟 < 50ms）。框架层开始「为 AI 而设计」：Next.js 16.2 的 create-next-app 自动生成 AGENTS.md，Vercel skills 把 AI 能力「包管理器化」；FormKit 创始人 Justin Schroeder 发布 ArrowJS 1.0，被定位为「代理时代」首个 UI 框架（仅 3 个函数 reactive/html/component，运行时 < 5KB，文档占 20 万 Token 上下文不到 5%）。开发者核心价值向架构设计、问题分解、代码审查迁移。",
+      url: "https://juejin.cn/post/7659569475197452351"
+    },
+    {
+      id: "f100",
+      title: "Anthropic 官方 Claude Code 最佳实践：验证优先闭环+探索/计划/编码三段式+精简 CLAUDE.md",
+      platform: "Anthropic Engineering",
+      author: "Anthropic",
+      date: "2026-09-18",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "Anthropic 官方给出 Claude Code 使用范式，核心约束是「上下文窗口是首要资源、填充会致表现退化」：①给 Claude 可运行的验证（测试/构建/lint/截图），让反馈闭环自主收敛——分四档强度：单提示内迭代、/goal 条件评估、Stop Hook 确定性门控（连续 8 次阻塞后放行）、验证子代理第二意见；②先探索→再计划→后编码，用 Plan Mode 分离调研与执行；③用 @ 引用文件、粘贴截图、URL、管道（cat error.log | claude）提供丰富上下文；④CLAUDE.md 要精简，只写代码无法推断的命令/风格/工作流规则，臃肿会致指令被忽略，并随团队提交入 git 复利。Power-user 技巧：用 Opus+thinking、/effort 调档（high/xhigh/max）、/btw 侧问不打断、/memory 自动记忆、前端装 Chrome 扩展做视觉验证、每次纠错后让 Claude 更新 CLAUDE.md 以复利。",
+      url: "https://www.anthropic.com/engineering/claude-code-best-practices"
+    },
+    {
+      id: "f99",
+      title: "AI结对编程2026祛魅实证：代码搅动率翻倍至7%、84%自认提效却27%体验变差，「先生成再追问」理解分86%反超手写",
+      platform: "LinkedIn",
+      author: "Ankit Kushwaha",
+      date: "2026-08-15",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "基于 GitClear 1.53 亿行代码等实证，2026 是「AI 结对编程」的祛魅时刻：AI 让「小批量提交」瓦解，代码搅动率（两周内被回退或大改）预计翻倍至 7%+（2021 仅 3-4%），重复代码上升、DRY 被破坏，团队承受高昂「验证税」——审查看似合理但需同等 scrutiny 的 AI 代码的认知开销。May 2026 追踪研究揭示悖论：84% 开发者自认效率提升，但开发者体验变差比例从 14% 翻倍到 27%（AI 建议打断心流、理解成本过高）。Anthropic 学习研究显示 AI 辅助下理解分从 24% 到 86% 不等，取决交互方式：最优是「先生成、再追问」（AI 写样板语法，开发者主动质疑输出），理解分 86% 反超纯手写对照组 67%。结论：工程师必须保持对机器生成架构的完全认知所有权。",
+      url: "https://www.linkedin.com/pulse/pair-programming-ai-2026-lessons-from-real-work-ankit-kushwaha-w38zc"
+    },
+    {
+      id: "f98",
+      title: "Cursor 生产化三件套：模块化 .cursor/rules + 自定义 Slash Commands + 隔离 Subagents，两遍协议解耦生成与验证",
+      platform: "DEV Community",
+      author: "dev.to",
+      date: "2026-07-26",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "Cursor 移除 Custom Modes 后的新范式是 Slash Commands + Skills + Subagents：①用 .cursor/rules/ 目录的 .mdc 文件（frontmatter 含 description/globs/alwaysApply）做模块化规则，替代臃肿的单一 .cursorrules；②用 project-context.mdc（alwaysApply:true）作为「唯一事实源」防止 AI 幻觉技术栈；③用 .cursor/commands/ 自定义斜杠命令把提示词+规则打包成可复用触发器；④用 .cursor/skills/ 给 AI 可执行脚本（压缩、抓文档）；⑤用 .cursor/agents/ 子代理在隔离上下文窗口做重推理（Planner 出实施计划、Architect 先分析代码库地图），避免污染主对话。推荐「两遍协议」解耦生成与验证：/build-widget 专注实现，再用 /qa-review 让 Senior QA 角色独立审查上一轮产出，避免「既当选手又当裁判」。",
+      url: "https://dev.to/mkomeyl94/from-prompt-to-production-mastering-rules-skills-and-subagents-in-cursor-47m4"
+    },
+    {
+      id: "f97",
+      title: "2026 现代 AI 前端实施策略：流式优先架构+MCP 预取上下文+防范间接提示注入+HITL 草稿态核验",
+      platform: "VOCE",
+      author: "VOCE",
+      date: "2026-05-08",
+      tags: ["📋方法论", "🔧工具"],
+      summary: "2026 现代 AI 前端实施策略：①采用「流式优先」架构——用 SSE 同时推送文本 token 与 UI 组件描述符；②把 UI 模块化成「盲组件」，运行时由 AI 生成器注水；③用 MCP 统一前端 Agent 取数并预取上下文，降低多智能体编排往返延迟，让过渡近乎瞬时；④安全上防范「间接提示注入」——Agent 读到含隐藏指令的邮件/网页后可能经 Generative UI 组件外泄数据，2026 报告称约 1/8 安全事故源自自主 Agent 系统，需「零信任」前端（LLM 产出的 JSON schema 先经模板校验、用 IFrame/隔离 Web 组件渲染生成元素）；⑤HITL 成为高风险企业应用的强制 UX 模式——保留只读 Draft 态，用户点击核验才执行。性能指标从 LCP 转向交互就绪度(IR)与上下文水合时间。",
+      url: "https://voce.com/praveenkumars/implementing-modern-frontend-strategies-2026-vo520p"
+    },
+    {
+      id: "f96",
+      title: "Vibe Coding 团队最佳实践：Green/Red Zone 边界框架，METR 实证用AI反而慢19%却自认快24%",
+      platform: "RTS Labs",
+      author: "RTS Labs",
+      date: "2026-07-06",
+      tags: ["📋方法论"],
+      summary: "提出 Green Zone / Red Zone 边界框架：AI 可自由生成原型/MVP、内部工具、UI 脚手架、重复模式；但认证授权、数据净化与输入校验、金融计算与合规逻辑、多服务架构、安全敏感系统必须由人类主导（Veracode 2025：45% AI 代码含 OWASP Top10 缺陷，86% 相关样本存在 XSS）。指出生产级 vibe coding 需要两种能力：提示工程 + 技术流利度（能批判性读懂生成代码是否安全、架构合理），后者决定产出是生产可用还是技术债。引用 METR 2025 随机对照试验（16 名资深开发者/246 个真实任务）：用 AI 反而多花 19% 时间，却自认快 24%——39 个百分点的感知落差是关键。八条实践：先写一页规格、原子化提示、逐行审阅、警惕硬编码凭证/SQL 字符串拼接/仅 UI 层鉴权等。",
+      url: "https://rtslabs.com/vibe-coding-best-practices/"
+    },
+    {
       id: "f95",
       title: "Claude Code全工具链协同实战：三层生态定位+双工具组合ROI最优解，Cursor/Codex/Claude Code三型分工而非竞争",
       platform: "AI Workflow Center",
@@ -325,12 +405,6 @@ const WORKFLOW_DATA = {
       tags: ["⚡新闻", "📋方法论"],
       summary: "Forrester《Agentic软件开发现状2026》报告揭示：TuringBot已进化为贯穿整个SDLC的Agent团队，非单点工具。领先企业工程吞吐提升3-10倍，原因在于AI从仅覆盖编码（+30-40%）转向贯穿规划→设计→构建→测试→交付全链路，瓶颈不再转移而是消除。开发者角色演进：PM vibe原型→开发审查/编排Agent→测试员设质量目标→架构师定约束/上下文。治理关键：Agent幻觉传播比人类快、需AI生成内容同等严格测试与审计链。",
       url: "https://www.forrester.com/blogs/agentic-software-development-takes-the-lead-from-code-assistants-to-orchestrated-sdlc-agents/"
-      platform: "Forrester",
-      author: "Diego Lo Giudice, VP Principal Analyst",
-      date: "2026-09-07",
-      tags: ["⚡新闻", "📋方法论"],
-      summary: "Forrester《Agentic软件开发现状2026》报告揭示：TuringBot已进化为贯穿整个SDLC的Agent团队，非单点工具。领先企业工程吞吐提升3-10倍，原因在于AI从仅覆盖编码（+30-40%）转向贯穿规划→设计→构建→测试→交付全链路，瓶颈不再转移而是消除。开发者角色演进：PM vibe原型→开发审查/编排Agent→测试员设质量目标→架构师定约束/上下文。治理关键：Agent幻觉传播比人类快、需AI生成内容同等严格测试与审计链。",
-      url: "https://www.forrester.com/blogs/agentic-software-development-takes-the-lead-from-code-assistants-to-orchestrated-sdlc-agents/"
     },
     {
       id: "f87",
@@ -389,7 +463,7 @@ const WORKFLOW_DATA = {
       author: "Anthropic Engineering Team",
       date: "2026-08-31",
       tags: ["🔧工具", "📋方法论"],
-      summary: "Anthropic官方发布Claude Code最佳实践，核心三条：①验证先于断言——给Claude可执行的检查(test/build/lint/截图diff)，而非主观声称"看起来好了"；②规划先于执行——Exploration→Plan→Implement→Commit四阶段，避免解错问题；③Subagent隔离中间探索——子代理独立上下文，研究结果返回主会话而非污染主上下文。验证标准应写在同一prompt里，含具体测试用例和命令。",
+      summary: "Anthropic官方发布Claude Code最佳实践，核心三条：①验证先于断言——给Claude可执行的检查(test/build/lint/截图diff)，而非主观声称\"看起来好了\"；②规划先于执行——Exploration→Plan→Implement→Commit四阶段，避免解错问题；③Subagent隔离中间探索——子代理独立上下文，研究结果返回主会话而非污染主上下文。验证标准应写在同一prompt里，含具体测试用例和命令。",
       url: "https://www.anthropic.com/engineering/claude-code-best-practices"
     },
     {
