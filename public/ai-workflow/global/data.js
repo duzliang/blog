@@ -4,7 +4,7 @@
 const WORKFLOW_DATA = {
   meta: {
     version: "1.0.0",
-    lastUpdated: "2026-09-28",
+    lastUpdated: "2026-10-05",
     updateFrequency: "weekly",
     sources: ["X/Twitter", "Reddit", "Medium", "HackerNews", "GitHub", "ArXiv"]
   },
@@ -246,6 +246,46 @@ const WORKFLOW_DATA = {
   },
 
   feed: [
+    {
+      id: "f108",
+      title: "AI Agent正在重写软件开发生命周期：2026年自主Agent团队使代码生成边际成本趋近于零，GitHub架构面临每秒6次提交上限挑战",
+      platform: "Futur Finance",
+      author: "Futur Finance Research",
+      date: "2026-10-05",
+      tags: ["⚡新闻", "📋方法论"],
+      summary: "软件开发生命周期正经历自高级语言诞生以来最深刻的范式转变：2026年生成式AI已从简单自动补全进化到自主、长时运行的Agent集群协同，OpenRouter上约50% Token消耗用于代码生成。企业级"软件工厂"模式兴起——Stripe/Coinbase/Ramp内部Agent每周合并1300个PR，将代码生成视为工业化而非工艺化过程。Cursor ARR一年内从1亿飙至40亿美元。但"AI slop"风险飙升：新iOS应用发布量年增60%，但总下载量同步下降，市场饱和于无真正用户需求的软件功能。新一代"AI原生"产品管理工具(Linear/Modem/Intent Lab)应运而生作为Agent集群的方向盘。同时GitHub现有架构设计为每仓库每分钟不超过6次提交，2026年平台级故障增加正推动Pierre Computer/East River Source Control等下一代版本控制方案兴起。",
+      url: "https://futurfinance.net/tag/undergoing/"
+    },
+    {
+      id: "f107",
+      title: "2026年开发者必体验的10款现代智能体AI工具：Goose本地自动化编程、Claude Code终端增强、Repomix上下文压缩、ScreenPipe屏幕感知记忆",
+      platform: "51CTO博客",
+      author: "51CTO博客",
+      date: "2026-10-05",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "2026年值得关注的10款现代智能体AI开发工具涵盖本地自动化编程(Goose支持终端命令执行与GitHub/Jira集成)、CLI级深度重构(Claude Code依托Claude 3.7+模型进行前置方案规划)、项目级上下文压缩(Repomix自动生成AI就绪代码快照)、本地化屏幕+音频录制(ScreenPipe赋予AI视觉与听觉记忆)、可视化编排(Rivet面向复杂业务逻辑、Flowise快速交付LangChain应用)、大模型API网关(Portkey故障自动切换+统一监控)、AI原生终端(Warp模块化命令输出+自然语言推荐)、Git原生命令行结对(Aider支持多文件批量修改)、本地离线知识引擎(Khoj索引Obsidian/Notion/PDF)等方向，强调本地优先、隐私可控、工作流原生集成。",
+      url: "https://blog.51cto.com/u_17049437/14582107"
+    },
+    {
+      id: "f106",
+      title: "AI Agent开发工具链2026全景：LangChain/LangGraph领跑框架层，Microsoft Agent Framework统一AutoGen+Semantic Kernel，企业AI Agent平台市场加速整合",
+      platform: "IdeativeMind / AI Agents Plus",
+      author: "IdeativeMind Research",
+      date: "2026-10-05",
+      tags: ["🔧工具", "📋方法论"],
+      summary: "2026年AI Agent开发框架格局已定：LangChain/LangGraph仍是最成熟选择，LangGraph v1.2.0(2026年5月)新增节点级超时、错误恢复(Saga/补偿路由)、DeltaChannel降低长线程checkpoint开销，支持复杂状态机工作流；Microsoft Agent Framework(MAF)于2026年4月统一AutoGen和Semantic Kernel，提供Python/.NET双SDK和YAML声明式Agent定义；CrewAI以角色化多Agent快速原型见长，2026年新增Visual Studio界面；OpenAI Agents SDK以轻量handoff模型快速获客，2026年6月更新支持分层子Agent生成(最多3层)。MCP生态已收录2000+服务器，成为Agent工具连接标准。",
+      url: "https://blog.ideativemind.com/ai-agents-for-developers-tools-frameworks"
+    },
+    {
+      id: "f105",
+      title: "Agentic Engineering进化论：从Vibe Coding到架构师角色，三阶段演进数据揭示55%开发者已定期使用AI Agent",
+      platform: "Sequoia AI Ascent 2026 / Pragmatic Engineer",
+      author: "Zhengxu Yu",
+      date: "2026-10-05",
+      tags: ["📋方法论", "⚡新闻"],
+      summary: "2026年软件工程正经历三个阶段演进：手动编码→Copilot时代(AI补全)→Agentic Engineering(AI自主规划、编写、测试)。Pragmatic Engineer调查(2026年2月)显示95%开发者每周使用AI工具、55%定期使用AI Agent而非仅自动补全，Stack Overflow 2025调查专业开发者日均AI工具使用率达51%。Anthropic Agentic Coding Trends报告显示2025年10月至2026年1月间，99.9百分位Claude Code会话时长从不足25分钟翻倍至超45分钟，Agent正在执行更长时间跨度的任务。Karpathy在Sequoia AI Ascent 2026提出Agentic Engineering核心定义：\"协调有缺陷的Agent同时保持正确性、安全性、品控和可维护性的专业学科\"——开发者角色从Editor进化为Architect。",
+      url: "https://zhengxuyu.github.io/blog/from-vibe-coding-to-agentic-engineering"
+    },
     {
       id: "f104",
       title: "你的代码库即将开始自我修复：2026年9月自主Agent修复生产级Bug的实测案例",
