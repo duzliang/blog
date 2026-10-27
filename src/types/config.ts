@@ -54,6 +54,7 @@ export type NavBarLink = {
 	name: string;
 	url: string;
 	external?: boolean;
+	reload?: boolean; // Use a full page load for standalone pages.
 };
 
 export type NavBarConfig = {

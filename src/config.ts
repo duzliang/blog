@@ -48,6 +48,7 @@ export const navBarConfig: NavBarConfig = {
 			name: "AI 工作流",
 			url: "/ai-workflow/local/",
 			external: false,
+			reload: true,
 		},
 		{
 			name: "GitHub",

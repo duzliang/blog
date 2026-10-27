@@ -253,7 +253,7 @@ const WORKFLOW_DATA = {
       author: "Futur Finance Research",
       date: "2026-10-05",
       tags: ["⚡新闻", "📋方法论"],
-      summary: "软件开发生命周期正经历自高级语言诞生以来最深刻的范式转变：2026年生成式AI已从简单自动补全进化到自主、长时运行的Agent集群协同，OpenRouter上约50% Token消耗用于代码生成。企业级"软件工厂"模式兴起——Stripe/Coinbase/Ramp内部Agent每周合并1300个PR，将代码生成视为工业化而非工艺化过程。Cursor ARR一年内从1亿飙至40亿美元。但"AI slop"风险飙升：新iOS应用发布量年增60%，但总下载量同步下降，市场饱和于无真正用户需求的软件功能。新一代"AI原生"产品管理工具(Linear/Modem/Intent Lab)应运而生作为Agent集群的方向盘。同时GitHub现有架构设计为每仓库每分钟不超过6次提交，2026年平台级故障增加正推动Pierre Computer/East River Source Control等下一代版本控制方案兴起。",
+      summary: "软件开发生命周期正经历自高级语言诞生以来最深刻的范式转变：2026年生成式AI已从简单自动补全进化到自主、长时运行的Agent集群协同，OpenRouter上约50% Token消耗用于代码生成。企业级\"软件工厂\"模式兴起——Stripe/Coinbase/Ramp内部Agent每周合并1300个PR，将代码生成视为工业化而非工艺化过程。Cursor ARR一年内从1亿飙至40亿美元。但\"AI slop\"风险飙升：新iOS应用发布量年增60%，但总下载量同步下降，市场饱和于无真正用户需求的软件功能。新一代\"AI原生\"产品管理工具(Linear/Modem/Intent Lab)应运而生作为Agent集群的方向盘。同时GitHub现有架构设计为每仓库每分钟不超过6次提交，2026年平台级故障增加正推动Pierre Computer/East River Source Control等下一代版本控制方案兴起。",
       url: "https://futurfinance.net/tag/undergoing/"
     },
     {

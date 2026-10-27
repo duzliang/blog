@@ -71,6 +71,12 @@ python3 scripts/fetch-sources.py               # 执行更新
 
 ## 🚀 快速开始
 
+在博客项目根目录运行 `pnpm dev`，访问 `/ai-workflow/local/`。
+`src/pages/ai-workflow/` 中的 Astro 路由复用本目录的 HTML，支持目录 URL；页面内容仍在本目录维护。
+服务启动后，运行 `node scripts/check-ai-workflow.js` 检查路由、导航和数据脚本（可传入其他服务地址）。
+
+也可以独立浏览静态 HTML：
+
 1. 用浏览器打开 `index.html`
 2. 点击 "Global 工作流" 查看业界最佳实践
 3. 点击 "Local 工作流" 查看项目定制
