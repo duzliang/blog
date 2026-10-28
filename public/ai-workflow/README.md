@@ -89,3 +89,9 @@ python3 scripts/fetch-sources.py               # 执行更新
 - **渐进式细节**：折叠/展开交互，避免信息过载
 - **AI/人类职责分明**：每个管线阶段清晰标注AI和人类的分工
 - **持续追踪**：信息流部分定期更新一线实践
+
+## 版本入口
+
+- 第二版内容修订：`/ai-workflow/v2/`，沿用第一版布局、栏目和交互；Global 与 Local 分别在 `/ai-workflow/v2/global/`、`/ai-workflow/v2/local/`。内容依据 `REVIEW-2026-10-28-v3.md`。
+- 第一版保留：`/ai-workflow/`、`/ai-workflow/global/`、`/ai-workflow/local/`。
+- v2 静态内容在 `v2/index.html`、`v2/global/`、`v2/local/`，对应 Astro 路由复用 HTML。第一版数据与内容保留，仅入口页页脚增加版本链接。
