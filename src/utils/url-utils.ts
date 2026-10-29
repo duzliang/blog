@@ -1,5 +1,6 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import { topics } from "../constants/topics";
 
 export function pathsEqual(path1: string, path2: string) {
 	const normalizedPath1 = path1.replace(/^\/|\/$/g, "").toLowerCase();
@@ -28,6 +29,10 @@ export function getCategoryUrl(category: string | null): string {
 		category.trim().toLowerCase() === i18n(I18nKey.uncategorized).toLowerCase()
 	)
 		return url("/archive/?uncategorized=true");
+	const topic = topics.find((item) => item.name === category.trim());
+	if (topic) {
+		return url(`/topics/${topic.slug}/`);
+	}
 	return url(`/archive/?category=${encodeURIComponent(category.trim())}`);
 }
 

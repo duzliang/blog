@@ -48,9 +48,9 @@ published: ${getDate()}
 description: ''
 image: ''
 tags: []
-category: ''
-draft: false 
-lang: ''
+category: '工程实践'
+draft: true
+lang: 'zh-CN'
 ---
 `
 

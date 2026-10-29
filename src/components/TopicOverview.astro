@@ -1,0 +1,20 @@
+---
+import { topics } from "../constants/topics";
+import { url } from "../utils/url-utils";
+---
+<section class="topic-overview mb-6" aria-labelledby="topics-title">
+    <div class="mb-5 px-2">
+        <p class="text-sm text-[var(--primary)] mb-2">实践 · 记录 · 思考</p>
+        <h1 id="topics-title" class="text-90 text-3xl font-bold mb-3">让好奇心，长出枝叶。</h1>
+        <p class="text-75 leading-relaxed">记录实践、阅读与生活中的探索。</p>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-3">
+        {topics.map((topic, index) => (
+            <a class="card-base topic-card p-5 block" href={url(`/topics/${topic.slug}/`)}>
+                <span class="text-sm text-[var(--primary)] font-mono">0{index + 1}</span>
+                <h2 class="text-90 text-lg font-bold mt-3 mb-2">{topic.name}</h2>
+                <p class="text-75 text-sm leading-relaxed">{topic.description}</p>
+            </a>
+        ))}
+    </div>
+</section>

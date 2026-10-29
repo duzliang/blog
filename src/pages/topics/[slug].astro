@@ -1,0 +1,38 @@
+---
+import PostPage from "../../components/PostPage.astro";
+import { topics } from "../../constants/topics";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../../utils/content-utils";
+import { url } from "../../utils/url-utils";
+
+export function getStaticPaths() {
+	return topics.map((topic) => ({ params: { slug: topic.slug }, props: { topic } }));
+}
+
+const { topic } = Astro.props;
+const posts = (await getSortedPosts()).filter((post) => post.data.category === topic.name);
+---
+<MainGridLayout title={topic.name} description={topic.description}>
+    <section class="card-base p-6 md:p-8 mb-4">
+        <a class="text-sm text-[var(--primary)]" href={url('/topics/')}>全部分枝 /</a>
+        <h1 class="text-90 text-3xl font-bold my-4">{topic.name}</h1>
+        <p class="text-75 leading-relaxed">{topic.description}</p>
+        {topic.slug === "ai-workflow" && (
+            <a class="btn-regular inline-flex px-4 py-3 rounded-lg mt-5" href={url('/ai-workflow/local/')} data-no-swup>
+                打开 AI 工作流 →
+            </a>
+        )}
+    </section>
+    {posts.length > 0 ? <PostPage page={{ data: posts }} /> : (
+        <section class="card-base p-6 md:p-8 mb-4">
+            <h2 class="text-90 text-lg font-bold mb-3">文章正在积累中</h2>
+            <p class="text-75">这个栏目会从实际遇到的问题开始记录，以下是准备探索的方向。</p>
+        </section>
+    )}
+    <section class="card-base p-6 md:p-8">
+        <h2 class="text-90 font-bold mb-3">后续选题</h2>
+        <ul class="text-75 list-disc pl-5 space-y-2">
+            {topic.ideas.map((idea) => <li>{idea}</li>)}
+        </ul>
+    </section>
+</MainGridLayout>

@@ -1,0 +1,57 @@
+@import '../theme.css';
+
+/* 独立工作流页面与博客共用 LogiMap 的主题变量。 */
+:root, :root.dark {
+  --ink: var(--color-text-primary);
+  --border: var(--color-border-default);
+  --border-w: 1px;
+  --shadow-x: 0px;
+  --shadow-y: 2px;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --bg-base: var(--color-bg-base);
+  --bg-card: var(--color-bg-elevated);
+  --bg-pink: var(--color-brand-subtle);
+  --bg-green: var(--color-brand-subtle);
+  --bg-blue: var(--color-brand-subtle);
+  --bg-yellow: var(--color-brand-subtle);
+  --bg-lavender: var(--color-brand-subtle);
+  --green: #4f46e5;
+  --green-dark: var(--color-text-brand);
+  --yellow: var(--color-brand-muted);
+  --blue: var(--color-text-brand);
+  --red: #e11d48;
+  --font: var(--font-sans);
+}
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background: radial-gradient(ellipse at 15% 0%, var(--ambient-violet), transparent 55%), var(--color-bg-base);
+}
+.topbar { background: var(--glass-3-bg); backdrop-filter: blur(16px); box-shadow: none; }
+.topbar-link:hover, .topbar-link.active { background: var(--color-brand-subtle); color: var(--color-text-brand); }
+.topbar-brand .logo { background: #4f46e5; }
+.hero h1, h1, h2, h3 { letter-spacing: -.025em; }
+.hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+.hero p, .footer { color: var(--color-text-secondary); }
+.hero .hl { background: var(--color-brand-subtle); color: var(--color-text-brand); border-radius: 8px; }
+.card, .card.g, .card.l, .conv-card, .core-card, .local-tool-card, .override-item, .wb-step, .wf-step-content, .tool-card {
+  background: var(--glass-1-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .025);
+  backdrop-filter: blur(16px);
+}
+.card:hover, .conv-card:hover, .core-card:hover, .local-tool-card:hover, .override-item:hover, .wb-step:hover, .wf-step-content:hover, .tool-card:hover {
+  border-color: var(--color-text-brand);
+  box-shadow: 0 8px 32px var(--ambient-violet);
+}
+.card .tag, .card.g .tag, .card.l .tag, .focus-chip {
+  color: var(--color-text-brand);
+  background: var(--color-brand-subtle);
+}
+.footer a { color: var(--color-text-brand); }
+@media (max-width: 640px) {
+  .topbar-inner { height: auto; min-height: 64px; gap: 12px; flex-wrap: wrap; padding-block: 12px; }
+}
+
+.banner-inner, .focus-chip, .wb-output, .wb-code { box-shadow: none; }

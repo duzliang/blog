@@ -5,8 +5,8 @@ import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
-export let tags: string[];
-export let categories: string[];
+export let tags: string[] = [];
+export let categories: string[] = [];
 export let sortedPosts: Post[] = [];
 
 const params = new URLSearchParams(window.location.search);
@@ -19,7 +19,7 @@ interface Post {
 	data: {
 		title: string;
 		tags: string[];
-		category?: string;
+		category?: string | null;
 		published: Date;
 	};
 }
@@ -86,6 +86,10 @@ onMount(async () => {
 </script>
 
 <div class="card-base px-8 py-6">
+    <h1 class="text-90 text-2xl font-bold mb-4">{i18n(I18nKey.archive)}</h1>
+    {#if groups.length === 0}
+        <p class="text-50 py-8 text-center">暂无符合条件的文章。</p>
+    {/if}
     {#each groups as group}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">

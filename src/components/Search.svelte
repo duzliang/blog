@@ -13,24 +13,6 @@ let isSearching = false;
 let pagefindLoaded = false;
 let initialized = false;
 
-const fakeResult: SearchResult[] = [
-	{
-		url: url("/"),
-		meta: {
-			title: "This Is a Fake Search Result",
-		},
-		excerpt:
-			"Because the search cannot work in the <mark>dev</mark> environment.",
-	},
-	{
-		url: url("/"),
-		meta: {
-			title: "If You Want to Test the Search",
-		},
-		excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
-	},
-];
-
 const togglePanel = () => {
 	const panel = document.getElementById("search-panel");
 	panel?.classList.toggle("float-panel-closed");
@@ -38,7 +20,9 @@ const togglePanel = () => {
 
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 	const panel = document.getElementById("search-panel");
-	if (!panel || !isDesktop) return;
+	if (!panel || !isDesktop) {
+		return;
+	}
 
 	if (show) {
 		panel.classList.remove("float-panel-closed");
@@ -69,14 +53,17 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 				response.results.map((item) => item.data()),
 			);
 		} else if (import.meta.env.DEV) {
-			searchResults = fakeResult;
+			searchResults = [];
 		} else {
 			searchResults = [];
 			console.error("Pagefind is not available in production environment.");
 		}
 
+		if (keyword !== (isDesktop ? keywordDesktop : keywordMobile)) {
+			return;
+		}
 		result = searchResults;
-		setPanelVisibility(result.length > 0, isDesktop);
+		setPanelVisibility(true, isDesktop);
 	} catch (error) {
 		console.error("Search error:", error);
 		result = [];
@@ -87,55 +74,29 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 };
 
 onMount(() => {
-	const initializeSearch = () => {
-		initialized = true;
-		pagefindLoaded =
-			typeof window !== "undefined" &&
-			!!window.pagefind &&
-			typeof window.pagefind.search === "function";
-		console.log("Pagefind status on init:", pagefindLoaded);
-		if (keywordDesktop) search(keywordDesktop, true);
-		if (keywordMobile) search(keywordMobile, false);
-	};
-
-	if (import.meta.env.DEV) {
-		console.log(
-			"Pagefind is not available in development mode. Using mock data.",
-		);
-		initializeSearch();
-	} else {
-		document.addEventListener("pagefindready", () => {
-			console.log("Pagefind ready event received.");
-			initializeSearch();
-		});
-		document.addEventListener("pagefindloaderror", () => {
-			console.warn(
-				"Pagefind load error event received. Search functionality will be limited.",
-			);
-			initializeSearch(); // Initialize with pagefindLoaded as false
-		});
-
-		// Fallback in case events are not caught or pagefind is already loaded by the time this script runs
-		setTimeout(() => {
-			if (!initialized) {
-				console.log("Fallback: Initializing search after timeout.");
-				initializeSearch();
+	const initializeSearch = async () => {
+		if (import.meta.env.PROD) {
+			try {
+				const moduleUrl = url("/pagefind/pagefind.js");
+				window.pagefind = await import(/* @vite-ignore */ moduleUrl);
+				pagefindLoaded = true;
+			} catch (error) {
+				console.error("搜索索引加载失败：", error);
 			}
-		}, 2000); // Adjust timeout as needed
-	}
+		}
+		initialized = true;
+	};
+	initializeSearch();
 });
 
-$: if (initialized && keywordDesktop) {
-	(async () => {
-		await search(keywordDesktop, true);
-	})();
+$: if (initialized) {
+	search(keywordDesktop, true);
 }
 
-$: if (initialized && keywordMobile) {
-	(async () => {
-		await search(keywordMobile, false);
-	})();
+$: if (initialized) {
+	search(keywordMobile, false);
 }
+
 </script>
 
 <!-- search bar for desktop view -->
@@ -146,12 +107,12 @@ $: if (initialized && keywordMobile) {
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
     <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
            class="transition-all pl-10 text-sm bg-transparent outline-0
-         h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
+         h-full w-28 text-black/50 dark:text-white/50"
     >
 </div>
 
 <!-- toggle btn for phone/tablet view -->
-<button on:click={togglePanel} aria-label="Search Panel" id="search-switch"
+<button on:click={togglePanel} aria-label="搜索文章" id="search-switch"
         class="btn-plain scale-animation lg:!hidden rounded-lg w-11 h-11 active:scale-90">
     <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
@@ -166,12 +127,19 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-        <input placeholder="Search" bind:value={keywordMobile}
+        <input placeholder={i18n(I18nKey.search)} bind:value={keywordMobile}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >
     </div>
 
+    {#if keywordDesktop || keywordMobile}
+        {#if import.meta.env.DEV}
+            <p class="p-3 text-sm text-50">开发环境不提供搜索，请构建后预览。</p>
+        {:else if !isSearching && result.length === 0}
+            <p class="p-3 text-sm text-50">{pagefindLoaded ? "没有找到相关文章，试试其他关键词。" : "搜索索引暂不可用，请稍后重试。"}</p>
+        {/if}
+    {/if}
     <!-- search results -->
     {#each result as item}
         <a href={item.url}

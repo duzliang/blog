@@ -1,9 +1,9 @@
-# About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+# 关于枝叶
 
-::github{repo="saicaca/fuwari"}
+记录 AI 工作流、工程实践与阅读思考。
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+- **[AI 工作流](/topics/ai-workflow/)**：工具使用与协作方法。
+- **[工程实践](/topics/engineering/)**：开发经验与问题复盘。
+- **[阅读与思考](/topics/reading/)**：阅读笔记与个人思考。
+
+本站基于 [Astro](https://astro.build) 和 [Fuwari](https://github.com/saicaca/fuwari) 构建。

@@ -1,0 +1,49 @@
+@import '../../public/theme.css';
+
+/* 将 LogiMap 语义色接入 Fuwari 现有组件，统一明暗两种模式。 */
+:root, :root.dark {
+  --radius-large: 1rem;
+  --primary: var(--color-text-brand);
+  --page-bg: var(--color-bg-base);
+  --card-bg: var(--glass-1-bg);
+  --float-panel-bg: var(--glass-3-bg);
+  --btn-content: var(--color-text-brand);
+  --btn-regular-bg: var(--color-brand-subtle);
+  --btn-regular-bg-hover: var(--color-brand-muted);
+  --btn-regular-bg-active: var(--color-brand-muted);
+  --btn-plain-bg-hover: var(--color-brand-subtle);
+  --btn-plain-bg-active: var(--color-brand-muted);
+  --btn-card-bg-hover: var(--color-brand-subtle);
+  --btn-card-bg-active: var(--color-brand-muted);
+  --line-divider: var(--color-border-default);
+  --line-color: var(--color-border-default);
+  --inline-code-bg: var(--color-brand-subtle);
+  --inline-code-color: var(--color-text-brand);
+  --selection-bg: var(--color-brand-muted);
+  --license-block-bg: var(--color-bg-sunken);
+  --link-underline: var(--color-brand-muted);
+  --link-hover: var(--color-text-brand);
+  --toc-badge-bg: var(--color-brand-subtle);
+  --toc-btn-hover: var(--color-brand-subtle);
+  --toc-btn-active: var(--color-brand-muted);
+  --toc-item-active: var(--color-brand-muted);
+  --title-active: var(--color-text-brand);
+}
+.card-base, .float-panel {
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .025);
+  backdrop-filter: blur(16px);
+}
+.text-90, .text-75 { color: var(--color-text-primary); }
+.text-50, .text-30, .text-25 { color: var(--color-text-secondary); }
+.topic-card { transition: border-color var(--motion-fast), background var(--motion-fast); }
+.topic-card:hover { border-color: var(--color-text-brand); background: var(--color-brand-subtle); }
+.custom-md { line-height: 1.9; color: var(--color-text-primary); overflow-wrap: anywhere; }
+.custom-md :is(h1, h2, h3, h4, strong) { color: var(--color-text-primary); }
+.custom-md blockquote { color: var(--color-text-secondary); }
+#navbar .card-base { background: var(--glass-3-bg); }
+#navbar a { white-space: nowrap; }
+#navbar .hidden.md\:flex a { padding-inline: .75rem; }
+@media (max-width: 1023px) {
+  #main-grid { padding-inline: 1rem; }
+}
